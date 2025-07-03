@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import PublishAnnonceForm from '@/components/annonces/PublishAnnonceForm';
 import { Button } from '@/components/ui/button';
-import { Search, Plus, Filter } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 
 const Annonces = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -15,7 +16,7 @@ const Annonces = () => {
     { id: 'besoins', name: 'Recherche de partenaires' },
   ];
 
-  const mockAnnonces = [
+  const initialAnnonces = [
     {
       id: 1,
       title: 'Recherche investisseur pour projet agricole',
@@ -48,6 +49,16 @@ const Annonces = () => {
     }
   ];
 
+  const [annonces, setAnnonces] = useState(initialAnnonces);
+
+  const handleAnnoncePublished = (newAnnonce: any) => {
+    setAnnonces(prev => [newAnnonce, ...prev]);
+  };
+
+  const filteredAnnonces = selectedCategory === 'all' 
+    ? annonces 
+    : annonces.filter(annonce => annonce.category === selectedCategory);
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -71,10 +82,7 @@ const Annonces = () => {
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
-            <Button className="bg-red-600 hover:bg-red-700">
-              <Plus className="h-4 w-4 mr-2" />
-              Publier une annonce
-            </Button>
+            <PublishAnnonceForm onAnnoncePublished={handleAnnoncePublished} />
             <Button variant="outline">
               <Filter className="h-4 w-4 mr-2" />
               Filtres
@@ -100,7 +108,7 @@ const Annonces = () => {
 
           {/* Annonces list */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockAnnonces.map((annonce) => (
+            {filteredAnnonces.map((annonce) => (
               <div key={annonce.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                 <div className="flex justify-between items-start mb-4">
                   <span className="px-3 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
