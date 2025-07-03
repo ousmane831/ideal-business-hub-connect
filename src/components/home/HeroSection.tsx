@@ -2,8 +2,11 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-gradient-to-br from-red-50 to-white py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,10 +19,19 @@ const HeroSection = () => {
             la mise en relation d'acteurs économiques et l'accès aux services administratifs
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="bg-red-600 hover:bg-red-700 px-8 py-3">
+            <Button 
+              size="lg" 
+              className="bg-red-600 hover:bg-red-700 px-8 py-3"
+              onClick={() => navigate('/annonces')}
+            >
               Commencer maintenant
             </Button>
-            <Button variant="outline" size="lg" className="px-8 py-3 border-red-600 text-red-600 hover:bg-red-50">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="px-8 py-3 border-red-600 text-red-600 hover:bg-red-50"
+              onClick={() => navigate('/profils')}
+            >
               Découvrir la plateforme
             </Button>
           </div>
