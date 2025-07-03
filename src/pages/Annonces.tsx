@@ -5,9 +5,11 @@ import Footer from '@/components/layout/Footer';
 import PublishAnnonceForm from '@/components/annonces/PublishAnnonceForm';
 import { Button } from '@/components/ui/button';
 import { Search, Filter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Annonces = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const navigate = useNavigate();
 
   const categories = [
     { id: 'all', name: 'Toutes les annonces' },
@@ -135,7 +137,11 @@ const Annonces = () => {
                   ))}
                 </div>
                 
-                <Button className="w-full bg-red-600 hover:bg-red-700" size="sm">
+                <Button 
+                  className="w-full bg-red-600 hover:bg-red-700" 
+                  size="sm"
+                  onClick={() => navigate(`/annonces/${annonce.id}`)}
+                >
                   Voir les détails
                 </Button>
               </div>
