@@ -8,7 +8,7 @@ const FeaturesSection = () => {
       icon: Users,
       title: 'Mise en relation',
       description: 'Connectez-vous avec des apporteurs d\'affaires, entrepreneurs et experts de votre secteur.',
-      color: 'bg-red-100 text-red-600'
+      color: 'bg-orange-100 text-orange-600'
     },
     {
       icon: FileText,

@@ -14,7 +14,7 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-red-50">
+    <section className="py-20 bg-orange-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -29,17 +29,17 @@ const ServicesSection = () => {
             <div className="space-y-4 mb-8">
               {services.map((service, index) => (
                 <div key={index} className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-red-600 mr-3 flex-shrink-0" />
+                  <CheckCircle className="h-5 w-5 text-orange-600 mr-3 flex-shrink-0" />
                   <span className="text-gray-700">{service}</span>
                 </div>
               ))}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-red-600 hover:bg-red-700">
+              <Button className="bg-orange-600 hover:bg-orange-700">
                 Demander un devis
               </Button>
-              <Button variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
+              <Button variant="outline" className="border-orange-600 text-orange-600 hover:bg-orange-50">
                 En savoir plus
               </Button>
             </div>

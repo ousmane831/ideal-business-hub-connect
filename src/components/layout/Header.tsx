@@ -17,13 +17,13 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white shadow-lg border-b-4 border-red-600">
+    <header className="bg-white shadow-lg border-b-4 border-orange-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <div className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
+              <div className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
                 IDEAL
               </div>
             </Link>
@@ -35,7 +35,7 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 {item.name}
               </Link>
@@ -48,7 +48,7 @@ const Header = () => {
               <User className="h-4 w-4 mr-2" />
               Connexion
             </Button>
-            <Button className="bg-red-600 hover:bg-red-700" size="sm">
+            <Button className="bg-orange-600 hover:bg-orange-700" size="sm">
               Inscription
             </Button>
             <Button variant="ghost" size="sm">
@@ -80,7 +80,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
@@ -90,7 +90,7 @@ const Header = () => {
                 <Button variant="outline" size="sm">
                   Connexion
                 </Button>
-                <Button className="bg-red-600 hover:bg-red-700" size="sm">
+                <Button className="bg-orange-600 hover:bg-orange-700" size="sm">
                   Inscription
                 </Button>
               </div>

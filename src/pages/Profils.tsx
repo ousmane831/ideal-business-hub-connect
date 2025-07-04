@@ -72,10 +72,10 @@ const Profils = () => {
               <input
                 type="text"
                 placeholder="Rechercher un profil par nom ou spécialité..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
             </div>
-            <Button className="bg-red-600 hover:bg-red-700">
+            <Button className="bg-orange-600 hover:bg-orange-700">
               Rechercher
             </Button>
           </div>
@@ -88,7 +88,7 @@ const Profils = () => {
                 onClick={() => setSelectedSpecialty(specialty.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedSpecialty === specialty.id
-                    ? 'bg-red-600 text-white'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -102,8 +102,8 @@ const Profils = () => {
             {mockProfiles.map((profile) => (
               <div key={profile.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-red-600" />
+                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">{profile.name}</h3>
@@ -140,7 +140,7 @@ const Profils = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full mt-4 bg-red-600 hover:bg-red-700" size="sm">
+                <Button className="w-full mt-4 bg-orange-600 hover:bg-orange-700" size="sm">
                   Contacter
                 </Button>
               </div>

@@ -81,7 +81,7 @@ const Annonces = () => {
               <input
                 type="text"
                 placeholder="Rechercher une annonce..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
             </div>
             <PublishAnnonceForm onAnnoncePublished={handleAnnoncePublished} />
@@ -99,7 +99,7 @@ const Annonces = () => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-red-600 text-white'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -113,7 +113,7 @@ const Annonces = () => {
             {filteredAnnonces.map((annonce) => (
               <div key={annonce.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="px-3 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                  <span className="px-3 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
                     {categories.find(c => c.id === annonce.category)?.name}
                   </span>
                   <span className="text-xs text-gray-500">{annonce.date}</span>
@@ -138,7 +138,7 @@ const Annonces = () => {
                 </div>
                 
                 <Button 
-                  className="w-full bg-red-600 hover:bg-red-700" 
+                  className="w-full bg-orange-600 hover:bg-orange-700" 
                   size="sm"
                   onClick={() => navigate(`/annonces/${annonce.id}`)}
                 >

@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo et description */}
           <div className="col-span-1 md:col-span-2">
-            <div className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-xl inline-block mb-4">
+            <div className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold text-xl inline-block mb-4">
               IDEAL
             </div>
             <p className="text-gray-300 text-sm mb-4">
@@ -22,10 +22,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Navigation</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/annonces" className="text-gray-300 hover:text-red-400">Annonces</Link></li>
-              <li><Link to="/profils" className="text-gray-300 hover:text-red-400">Profils</Link></li>
-              <li><Link to="/mediatheque" className="text-gray-300 hover:text-red-400">Médiathèque</Link></li>
-              <li><Link to="/documentation" className="text-gray-300 hover:text-red-400">Documentation</Link></li>
+              <li><Link to="/annonces" className="text-gray-300 hover:text-orange-400">Annonces</Link></li>
+              <li><Link to="/profils" className="text-gray-300 hover:text-orange-400">Profils</Link></li>
+              <li><Link to="/mediatheque" className="text-gray-300 hover:text-orange-400">Médiathèque</Link></li>
+              <li><Link to="/documentation" className="text-gray-300 hover:text-orange-400">Documentation</Link></li>
             </ul>
           </div>
 
