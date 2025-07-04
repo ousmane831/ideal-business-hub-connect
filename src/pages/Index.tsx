@@ -2,20 +2,14 @@
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import HeroSection from '@/components/home/HeroSection';
-import FeaturesSection from '@/components/home/FeaturesSection';
-import ServicesSection from '@/components/home/ServicesSection';
-import CTASection from '@/components/home/CTASection';
+import ModernHeroSection from '@/components/home/ModernHeroSection';
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
       <main>
-        <HeroSection />
-        <FeaturesSection />
-        <ServicesSection />
-        <CTASection />
+        <ModernHeroSection />
       </main>
       <Footer />
     </div>
