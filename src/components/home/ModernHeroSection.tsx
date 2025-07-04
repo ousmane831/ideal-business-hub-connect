@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, FileText, UserPlus, BookOpen, User, Newspaper, X } from 'lucide-react';
+import { FileText, BookOpen, User, Newspaper, X } from 'lucide-react';
 
 const ModernHeroSection = () => {
   const navigate = useNavigate();
@@ -10,16 +10,6 @@ const ModernHeroSection = () => {
   const features = [
     {
       id: 1,
-      title: 'Apporteur d\'affaires',
-      description: 'Connectez-vous avec des partenaires business et développez votre réseau professionnel',
-      icon: Users,
-      color: 'from-orange-400 to-orange-600',
-      bgColor: 'bg-gradient-to-br from-orange-50 to-orange-100',
-      route: '/profils',
-      image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 2,
       title: 'Annonces',
       description: 'Découvrez et publiez des opportunités d\'affaires dans votre secteur d\'activité',
       icon: FileText,
@@ -29,17 +19,7 @@ const ModernHeroSection = () => {
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
     },
     {
-      id: 3,
-      title: 'Inscription',
-      description: 'Rejoignez notre communauté d\'entrepreneurs et accédez à toutes les fonctionnalités',
-      icon: UserPlus,
-      color: 'from-green-400 to-green-600',
-      bgColor: 'bg-gradient-to-br from-green-50 to-green-100',
-      route: '/profils',
-      image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-    },
-    {
-      id: 4,
+      id: 2,
       title: 'Documentation',
       description: 'Accédez aux guides et ressources pour optimiser votre utilisation de la plateforme',
       icon: BookOpen,
@@ -49,7 +29,7 @@ const ModernHeroSection = () => {
       image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
     },
     {
-      id: 5,
+      id: 3,
       title: 'Profils',
       description: 'Explorez les profils d\'entrepreneurs et d\'experts dans votre domaine',
       icon: User,
@@ -59,7 +39,7 @@ const ModernHeroSection = () => {
       image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
     },
     {
-      id: 6,
+      id: 4,
       title: 'Actualités',
       description: 'Restez informé des dernières nouvelles et tendances du monde des affaires',
       icon: Newspaper,
@@ -97,7 +77,7 @@ const ModernHeroSection = () => {
 
       {/* Features Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {features.map((feature) => {
             const IconComponent = feature.icon;
             const isExpanded = expandedCard === feature.id;
@@ -106,15 +86,18 @@ const ModernHeroSection = () => {
               <div
                 key={feature.id}
                 className={`
-                  relative overflow-hidden rounded-2xl shadow-xl cursor-pointer
-                  transform transition-all duration-500 ease-in-out
+                  relative overflow-hidden transform rotate-2 hover:rotate-0 cursor-pointer
+                  transition-all duration-500 ease-in-out shadow-xl
                   ${isExpanded 
-                    ? 'scale-105 z-50 md:col-span-2 lg:col-span-3' 
+                    ? 'scale-105 z-50 md:col-span-2 rotate-0' 
                     : 'hover:scale-105 hover:shadow-2xl'
                   }
                 `}
                 onClick={() => handleCardClick(feature)}
-                style={{ height: isExpanded ? '400px' : '300px' }}
+                style={{ 
+                  height: isExpanded ? '400px' : '300px',
+                  clipPath: 'polygon(0 0, 100% 0, 95% 100%, 5% 100%)'
+                }}
               >
                 {/* Background Image */}
                 <div

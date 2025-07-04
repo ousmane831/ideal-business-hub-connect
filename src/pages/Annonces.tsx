@@ -62,7 +62,7 @@ const Annonces = () => {
     : annonces.filter(annonce => annonce.category === selectedCategory);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <Header />
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,11 +81,11 @@ const Annonces = () => {
               <input
                 type="text"
                 placeholder="Rechercher une annonce..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <PublishAnnonceForm onAnnoncePublished={handleAnnoncePublished} />
-            <Button variant="outline">
+            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
               <Filter className="h-4 w-4 mr-2" />
               Filtres
             </Button>
@@ -99,8 +99,8 @@ const Annonces = () => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-orange-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-blue-100'
                 }`}
               >
                 {category.name}
@@ -111,9 +111,9 @@ const Annonces = () => {
           {/* Annonces list */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredAnnonces.map((annonce) => (
-              <div key={annonce.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div key={annonce.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-blue-500">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="px-3 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
                     {categories.find(c => c.id === annonce.category)?.name}
                   </span>
                   <span className="text-xs text-gray-500">{annonce.date}</span>
@@ -131,14 +131,14 @@ const Annonces = () => {
                 
                 <div className="flex flex-wrap gap-1 mb-4">
                   {annonce.tags.map((tag, index) => (
-                    <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                    <span key={index} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded">
                       {tag}
                     </span>
                   ))}
                 </div>
                 
                 <Button 
-                  className="w-full bg-orange-600 hover:bg-orange-700" 
+                  className="w-full bg-blue-600 hover:bg-blue-700" 
                   size="sm"
                   onClick={() => navigate(`/annonces/${annonce.id}`)}
                 >

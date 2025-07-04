@@ -53,7 +53,7 @@ const Profils = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
       <Header />
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,10 +72,10 @@ const Profils = () => {
               <input
                 type="text"
                 placeholder="Rechercher un profil par nom ou spécialité..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               />
             </div>
-            <Button className="bg-orange-600 hover:bg-orange-700">
+            <Button className="bg-pink-600 hover:bg-pink-700">
               Rechercher
             </Button>
           </div>
@@ -88,8 +88,8 @@ const Profils = () => {
                 onClick={() => setSelectedSpecialty(specialty.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedSpecialty === specialty.id
-                    ? 'bg-orange-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-pink-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-pink-100'
                 }`}
               >
                 {specialty.name}
@@ -100,10 +100,10 @@ const Profils = () => {
           {/* Profiles grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockProfiles.map((profile) => (
-              <div key={profile.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+              <div key={profile.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-pink-500">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-orange-600" />
+                  <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-pink-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">{profile.name}</h3>
@@ -122,7 +122,7 @@ const Profils = () => {
                   <h4 className="text-sm font-semibold text-gray-900 mb-2">Services proposés :</h4>
                   <div className="flex flex-wrap gap-1">
                     {profile.services.map((service, index) => (
-                      <span key={index} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                      <span key={index} className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded">
                         {service}
                       </span>
                     ))}
@@ -140,7 +140,7 @@ const Profils = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full mt-4 bg-orange-600 hover:bg-orange-700" size="sm">
+                <Button className="w-full mt-4 bg-pink-600 hover:bg-pink-700" size="sm">
                   Contacter
                 </Button>
               </div>
