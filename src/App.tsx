@@ -8,7 +8,6 @@ import Index from "./pages/Index";
 import Annonces from "./pages/Annonces";
 import AnnonceDetail from "./pages/AnnonceDetail";
 import Profils from "./pages/Profils";
-import Mediatheque from "./pages/Mediatheque";
 import Documentation from "./pages/Documentation";
 import Actualites from "./pages/Actualites";
 import NotFound from "./pages/NotFound";
@@ -26,7 +25,6 @@ const App = () => (
           <Route path="/annonces" element={<Annonces />} />
           <Route path="/annonces/:id" element={<AnnonceDetail />} />
           <Route path="/profils" element={<Profils />} />
-          <Route path="/mediatheque" element={<Mediatheque />} />
           <Route path="/documentation" element={<Documentation />} />
           <Route path="/actualites" element={<Actualites />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
