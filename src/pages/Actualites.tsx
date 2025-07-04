@@ -83,9 +83,9 @@ const Actualites = () => {
           </div>
 
           {/* Upcoming events highlight */}
-          <div className="bg-red-50 rounded-lg p-6 mb-8">
+          <div className="bg-orange-50 rounded-lg p-6 mb-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-              <Calendar className="h-5 w-5 mr-2 text-red-600" />
+              <Calendar className="h-5 w-5 mr-2 text-orange-600" />
               Événements à venir
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -113,7 +113,7 @@ const Actualites = () => {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-red-600 text-white'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -132,7 +132,7 @@ const Actualites = () => {
                     alt={news.title}
                     className="w-full h-full object-cover"
                   />
-                  <span className="absolute top-2 right-2 px-2 py-1 bg-red-600 text-white text-xs font-medium rounded">
+                  <span className="absolute top-2 right-2 px-2 py-1 bg-orange-600 text-white text-xs font-medium rounded">
                     {categories.find(c => c.id === news.category)?.name}
                   </span>
                 </div>
@@ -166,7 +166,7 @@ const Actualites = () => {
                     ))}
                   </div>
                   
-                  <Button className="w-full bg-red-600 hover:bg-red-700" size="sm">
+                  <Button className="w-full bg-orange-600 hover:bg-orange-700" size="sm">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     En savoir plus
                   </Button>

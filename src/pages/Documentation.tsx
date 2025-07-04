@@ -90,8 +90,8 @@ const Documentation = () => {
                 return (
                   <div key={resource.id} className="bg-white rounded-lg shadow-md p-6">
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
-                        <IconComponent className="h-6 w-6 text-red-600" />
+                      <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                        <IconComponent className="h-6 w-6 text-orange-600" />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900">{resource.title}</h3>
                     </div>
@@ -103,7 +103,7 @@ const Documentation = () => {
                         <a
                           key={index}
                           href={link.url}
-                          className="flex items-center text-red-600 hover:text-red-700 text-sm transition-colors"
+                          className="flex items-center text-orange-600 hover:text-orange-700 text-sm transition-colors"
                         >
                           <ExternalLink className="h-4 w-4 mr-2" />
                           {link.name}
@@ -134,7 +134,7 @@ const Documentation = () => {
                     variant="outline"
                     className="justify-start h-auto p-4 text-left"
                   >
-                    <FileText className="h-5 w-5 mr-3 text-red-600" />
+                    <FileText className="h-5 w-5 mr-3 text-orange-600" />
                     <span className="text-sm">{form}</span>
                   </Button>
                 ))}
@@ -145,7 +145,7 @@ const Documentation = () => {
           {/* FAQ section */}
           <div>
             <div className="flex items-center mb-6">
-              <HelpCircle className="h-8 w-8 text-red-600 mr-3" />
+              <HelpCircle className="h-8 w-8 text-orange-600 mr-3" />
               <h2 className="text-2xl font-bold text-gray-900">Questions Fréquentes</h2>
             </div>
             <div className="space-y-4">

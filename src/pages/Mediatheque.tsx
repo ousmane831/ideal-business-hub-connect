@@ -83,10 +83,10 @@ const Mediatheque = () => {
               <input
                 type="text"
                 placeholder="Rechercher un document..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
             </div>
-            <Button className="bg-red-600 hover:bg-red-700">
+            <Button className="bg-orange-600 hover:bg-orange-700">
               Rechercher
             </Button>
           </div>
@@ -101,7 +101,7 @@ const Mediatheque = () => {
                   onClick={() => setSelectedType(type.id)}
                   className={`flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                     selectedType === type.id
-                      ? 'bg-red-600 text-white'
+                      ? 'bg-orange-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -120,11 +120,11 @@ const Mediatheque = () => {
                 <div key={document.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
-                        <IconComponent className="h-5 w-5 text-red-600" />
+                      <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                        <IconComponent className="h-5 w-5 text-orange-600" />
                       </div>
                       <div>
-                        <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded">
+                        <span className="text-xs font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded">
                           {document.format}
                         </span>
                       </div>
@@ -145,7 +145,7 @@ const Mediatheque = () => {
                       <Eye className="h-4 w-4 mr-2" />
                       Aperçu
                     </Button>
-                    <Button className="flex-1 bg-red-600 hover:bg-red-700" size="sm">
+                    <Button className="flex-1 bg-orange-600 hover:bg-orange-700" size="sm">
                       <Download className="h-4 w-4 mr-2" />
                       Télécharger
                     </Button>

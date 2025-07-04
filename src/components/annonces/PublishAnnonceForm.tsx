@@ -84,7 +84,7 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
   const getFileIcon = (type: string) => {
     switch (type) {
       case 'pdf':
-        return <FileText className="h-5 w-5 text-red-600" />;
+        return <FileText className="h-5 w-5 text-orange-600" />;
       case 'image':
         return <FileImage className="h-5 w-5 text-green-600" />;
       case 'video':
@@ -161,7 +161,7 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-red-600 hover:bg-red-700">
+        <Button className="bg-orange-600 hover:bg-orange-700">
           <Plus className="h-4 w-4 mr-2" />
           Publier une annonce
         </Button>
@@ -325,7 +325,7 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
             </Button>
             <Button 
               type="submit" 
-              className="flex-1 bg-red-600 hover:bg-red-700"
+              className="flex-1 bg-orange-600 hover:bg-orange-700"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Publication...' : 'Publier'}
