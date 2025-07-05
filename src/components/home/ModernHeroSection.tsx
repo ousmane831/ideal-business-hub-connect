@@ -67,19 +67,26 @@ const ModernHeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black py-12 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+      {/* Animated background */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-r from-pink-400 to-red-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-gradient-to-r from-yellow-400 to-orange-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+      </div>
+
       {/* Header */}
-      <div className="max-w-7xl mx-auto text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-          <span className="text-orange-600">IDEAL</span> Platform
+      <div className="max-w-7xl mx-auto text-center mb-16 relative z-10">
+        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <span className="text-orange-400">IDEAL</span> Platform
         </h1>
-        <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
           Votre passerelle vers le succès entrepreneurial
         </p>
       </div>
 
       {/* Scrolling Features Container */}
-      <div className="max-w-7xl mx-auto mb-16">
+      <div className="max-w-7xl mx-auto mb-16 relative z-10">
         <div className="relative overflow-hidden">
           <div className="flex animate-scroll-right space-x-8">
             {duplicatedFeatures.map((feature, index) => {
@@ -91,72 +98,87 @@ const ModernHeroSection = () => {
                   key={`${feature.id}-${index}`}
                   className={`
                     relative overflow-hidden cursor-pointer flex-shrink-0
-                    transition-all duration-700 ease-in-out shadow-xl
+                    transition-all duration-700 ease-in-out
                     ${isExpanded 
                       ? 'scale-110 z-50 w-96' 
-                      : 'hover:scale-105 hover:shadow-2xl w-80'
+                      : 'hover:scale-105 w-80'
                     }
                   `}
                   onClick={() => handleCardClick(feature)}
                   style={{ 
                     height: isExpanded ? '500px' : '400px',
-                    clipPath: 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
-                    transform: `rotateY(${index % 2 === 0 ? '5deg' : '-5deg'}) rotateX(10deg)`,
-                    animation: `float-${index % 4} 3s ease-in-out infinite alternate, pulse 2s ease-in-out infinite alternate`
                   }}
                 >
-                  {/* Background Image */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${feature.image})` }}
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-80`} />
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative h-full flex flex-col justify-between p-8 text-white">
-                    {/* Close button for expanded state */}
-                    {isExpanded && (
-                      <button
-                        onClick={closeExpanded}
-                        className="absolute top-4 right-4 p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors duration-200"
-                      >
-                        <X className="h-6 w-6" />
-                      </button>
-                    )}
-
-                    {/* Icon and Title */}
-                    <div className="flex flex-col items-center space-y-4 text-center">
-                      <div className="p-4 bg-white/20 rounded-xl backdrop-blur-sm animate-bounce">
-                        <IconComponent className="h-10 w-10" />
-                      </div>
-                      <h3 className="text-2xl font-bold">{feature.title}</h3>
+                  {/* Mirror Card Container */}
+                  <div className="relative h-full rounded-3xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl overflow-hidden">
+                    {/* Glossy overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-50"></div>
+                    
+                    {/* Reflection effect */}
+                    <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent"></div>
+                    
+                    {/* Animated border glow */}
+                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 blur-sm -z-10"></div>
+                    
+                    {/* Background Image with mirror effect */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center rounded-3xl"
+                      style={{ backgroundImage: `url(${feature.image})` }}
+                    >
+                      <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-60 rounded-3xl`} />
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40 rounded-3xl" />
                     </div>
 
-                    {/* Description */}
-                    <div className="space-y-4 text-center">
-                      <p className={`text-lg leading-relaxed ${isExpanded ? 'text-xl' : ''}`}>
-                        {feature.description}
-                      </p>
-                      
+                    {/* Glass effect overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm rounded-3xl"></div>
+
+                    {/* Content */}
+                    <div className="relative h-full flex flex-col justify-between p-8 text-white z-10">
+                      {/* Close button for expanded state */}
                       {isExpanded && (
-                        <div className="animate-fade-in">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(feature.route);
-                            }}
-                            className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105"
-                          >
-                            Découvrir →
-                          </button>
-                        </div>
+                        <button
+                          onClick={closeExpanded}
+                          className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200 border border-white/20"
+                        >
+                          <X className="h-6 w-6" />
+                        </button>
                       )}
+
+                      {/* Icon and Title */}
+                      <div className="flex flex-col items-center space-y-4 text-center">
+                        <div className="p-6 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 shadow-xl animate-float">
+                          <IconComponent className="h-12 w-12 text-white drop-shadow-lg" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white drop-shadow-lg">{feature.title}</h3>
+                      </div>
+
+                      {/* Description */}
+                      <div className="space-y-4 text-center">
+                        <p className={`text-lg leading-relaxed text-white/90 drop-shadow-md ${isExpanded ? 'text-xl' : ''}`}>
+                          {feature.description}
+                        </p>
+                        
+                        {isExpanded && (
+                          <div className="animate-fade-in">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(feature.route);
+                              }}
+                              className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl"
+                            >
+                              Découvrir →
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Shimmer effect */}
+                    <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
                     </div>
                   </div>
-
-                  {/* Moving overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
                 </div>
               );
             })}
@@ -165,27 +187,30 @@ const ModernHeroSection = () => {
       </div>
 
       {/* Bottom CTA */}
-      <div className="max-w-4xl mx-auto text-center mt-20">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Prêt à transformer votre business ?
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Rejoignez des milliers d'entrepreneurs qui font confiance à IDEAL Platform
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/profils')}
-              className="bg-orange-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-orange-700 transition-colors duration-200 transform hover:scale-105"
-            >
-              Commencer maintenant
-            </button>
-            <button
-              onClick={() => navigate('/documentation')}
-              className="border-2 border-orange-600 text-orange-600 px-8 py-4 rounded-lg font-semibold hover:bg-orange-50 transition-colors duration-200 transform hover:scale-105"
-            >
-              En savoir plus
-            </button>
+      <div className="max-w-4xl mx-auto text-center mt-20 relative z-10">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl"></div>
+          <div className="relative">
+            <h2 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+              Prêt à transformer votre business ?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8">
+              Rejoignez des milliers d'entrepreneurs qui font confiance à IDEAL Platform
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => navigate('/profils')}
+                className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-xl border border-white/20 backdrop-blur-sm"
+              >
+                Commencer maintenant
+              </button>
+              <button
+                onClick={() => navigate('/documentation')}
+                className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl"
+              >
+                En savoir plus
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -197,29 +222,30 @@ const ModernHeroSection = () => {
           100% { transform: translateX(-50%); }
         }
         
-        @keyframes float-0 {
-          0% { transform: rotateY(5deg) rotateX(10deg) translateY(0px); }
-          100% { transform: rotateY(5deg) rotateX(10deg) translateY(-20px); }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(2deg); }
         }
-        @keyframes float-1 {
-          0% { transform: rotateY(-5deg) rotateX(10deg) translateY(-10px); }
-          100% { transform: rotateY(-5deg) rotateX(10deg) translateY(10px); }
-        }
-        @keyframes float-2 {
-          0% { transform: rotateY(5deg) rotateX(10deg) translateY(-5px); }
-          100% { transform: rotateY(5deg) rotateX(10deg) translateY(-25px); }
-        }
-        @keyframes float-3 {
-          0% { transform: rotateY(-5deg) rotateX(10deg) translateY(-15px); }
-          100% { transform: rotateY(-5deg) rotateX(10deg) translateY(5px); }
+        
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(12deg); }
+          100% { transform: translateX(200%) skewX(12deg); }
         }
         
         .animate-scroll-right {
-          animation: scroll-right 15s linear infinite;
+          animation: scroll-right 20s linear infinite;
         }
         
         .animate-scroll-right:hover {
           animation-play-state: paused;
+        }
+        
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 2s ease-in-out infinite;
         }
         `}
       </style>
