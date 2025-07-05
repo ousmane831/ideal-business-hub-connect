@@ -120,7 +120,7 @@ const ModernHeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black py-12 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black py-6 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
       {/* Animated background */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
@@ -128,18 +128,18 @@ const ModernHeroSection = () => {
         <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-gradient-to-r from-yellow-400 to-orange-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto text-center mb-12 relative z-10">
-        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+      {/* Header - Reduced size */}
+      <div className="max-w-7xl mx-auto text-center mb-8 relative z-10">
+        <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
           <span className="text-orange-400">IDEAL</span> Platform
         </h1>
-        <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
           Votre passerelle vers le succès entrepreneurial
         </p>
       </div>
 
-      {/* Main Features - Reduced size */}
-      <div className="max-w-7xl mx-auto mb-12 relative z-10">
+      {/* Main Features - Reduced size and spacing */}
+      <div className="max-w-7xl mx-auto mb-6 relative z-10">
         <div className="relative overflow-hidden">
           <div className="flex animate-scroll-right space-x-6">
             {duplicatedFeatures.map((feature, index) => {
@@ -154,12 +154,12 @@ const ModernHeroSection = () => {
                     transition-all duration-700 ease-in-out
                     ${isExpanded 
                       ? 'scale-110 z-50 w-80' 
-                      : 'hover:scale-105 w-64'
+                      : 'hover:scale-105 w-56'
                     }
                   `}
                   onClick={() => handleCardClick(feature)}
                   style={{ 
-                    height: isExpanded ? '400px' : '320px',
+                    height: isExpanded ? '340px' : '260px',
                   }}
                 >
                   {/* Mirror Card Container */}
@@ -186,28 +186,28 @@ const ModernHeroSection = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm rounded-3xl"></div>
 
                     {/* Content */}
-                    <div className="relative h-full flex flex-col justify-between p-6 text-white z-10">
+                    <div className="relative h-full flex flex-col justify-between p-5 text-white z-10">
                       {/* Close button for expanded state */}
                       {isExpanded && (
                         <button
                           onClick={closeExpanded}
-                          className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200 border border-white/20"
+                          className="absolute top-3 right-3 p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200 border border-white/20"
                         >
-                          <X className="h-5 w-5" />
+                          <X className="h-4 w-4" />
                         </button>
                       )}
 
                       {/* Icon and Title */}
                       <div className="flex flex-col items-center space-y-3 text-center">
-                        <div className="p-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 shadow-xl animate-float">
-                          <IconComponent className="h-8 w-8 text-white drop-shadow-lg" />
+                        <div className="p-3 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 shadow-xl animate-float">
+                          <IconComponent className="h-6 w-6 text-white drop-shadow-lg" />
                         </div>
-                        <h3 className="text-xl font-bold text-white drop-shadow-lg">{feature.title}</h3>
+                        <h3 className="text-lg font-bold text-white drop-shadow-lg">{feature.title}</h3>
                       </div>
 
                       {/* Description */}
                       <div className="space-y-3 text-center">
-                        <p className={`text-sm leading-relaxed text-white/90 drop-shadow-md ${isExpanded ? 'text-base' : ''}`}>
+                        <p className={`text-xs leading-relaxed text-white/90 drop-shadow-md ${isExpanded ? 'text-sm' : ''}`}>
                           {feature.description}
                         </p>
                         
@@ -218,7 +218,7 @@ const ModernHeroSection = () => {
                                 e.stopPropagation();
                                 navigate(feature.route);
                               }}
-                              className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-2 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl text-sm"
+                              className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-5 py-2 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl text-xs"
                             >
                               Découvrir →
                             </button>
@@ -240,7 +240,7 @@ const ModernHeroSection = () => {
       </div>
 
       {/* Ads Section - Smaller and opposite direction */}
-      <div className="max-w-7xl mx-auto mb-16 relative z-10">
+      <div className="max-w-7xl mx-auto mb-8 relative z-10">
         <div className="relative overflow-hidden">
           <div className="flex animate-scroll-left space-x-4">
             {duplicatedAds.map((ad, index) => {
@@ -249,7 +249,7 @@ const ModernHeroSection = () => {
               return (
                 <div
                   key={`ad-${ad.id}-${index}`}
-                  className="relative overflow-hidden cursor-pointer flex-shrink-0 w-48 h-32 hover:scale-105 transition-all duration-300"
+                  className="relative overflow-hidden cursor-pointer flex-shrink-0 w-40 h-24 hover:scale-105 transition-all duration-300"
                 >
                   {/* Ad Card Container */}
                   <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
@@ -261,17 +261,17 @@ const ModernHeroSection = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/30 rounded-2xl" />
 
                     {/* Badge */}
-                    <div className="absolute top-2 right-2 bg-white/90 text-black text-xs font-bold px-2 py-1 rounded-full backdrop-blur-sm">
+                    <div className="absolute top-1 right-1 bg-white/90 text-black text-xs font-bold px-1.5 py-0.5 rounded-full backdrop-blur-sm">
                       {ad.badge}
                     </div>
 
                     {/* Content */}
-                    <div className="relative h-full flex flex-col justify-center items-center p-4 text-white z-10 text-center">
-                      <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 shadow-lg mb-2">
-                        <IconComponent className="h-5 w-5 text-white" />
+                    <div className="relative h-full flex flex-col justify-center items-center p-3 text-white z-10 text-center">
+                      <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 shadow-lg mb-1">
+                        <IconComponent className="h-4 w-4 text-white" />
                       </div>
-                      <h4 className="text-sm font-bold text-white drop-shadow-lg mb-1">{ad.title}</h4>
-                      <p className="text-xs text-white/80 drop-shadow-md">{ad.description}</p>
+                      <h4 className="text-xs font-bold text-white drop-shadow-lg mb-0.5">{ad.title}</h4>
+                      <p className="text-xs text-white/80 drop-shadow-md leading-tight">{ad.description}</p>
                     </div>
 
                     {/* Hover effect */}
@@ -286,27 +286,27 @@ const ModernHeroSection = () => {
         </div>
       </div>
 
-      {/* Bottom CTA */}
-      <div className="max-w-4xl mx-auto text-center mt-20 relative z-10">
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl">
+      {/* Bottom CTA - Reduced size and spacing */}
+      <div className="max-w-4xl mx-auto text-center mt-8 relative z-10">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl"></div>
           <div className="relative">
-            <h2 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
               Prêt à transformer votre business ?
             </h2>
-            <p className="text-xl text-gray-300 mb-8">
+            <p className="text-lg text-gray-300 mb-6">
               Rejoignez des milliers d'entrepreneurs qui font confiance à IDEAL Platform
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
                 onClick={() => navigate('/profils')}
-                className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-xl border border-white/20 backdrop-blur-sm"
+                className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-xl border border-white/20 backdrop-blur-sm"
               >
                 Commencer maintenant
               </button>
               <button
                 onClick={() => navigate('/documentation')}
-                className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl"
+                className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl"
               >
                 En savoir plus
               </button>
