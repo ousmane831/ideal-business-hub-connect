@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, BookOpen, User, Newspaper, X } from 'lucide-react';
+import { FileText, BookOpen, User, Newspaper, X, Star, Trophy, Target, Zap } from 'lucide-react';
 
 const ModernHeroSection = () => {
   const navigate = useNavigate();
@@ -50,8 +50,61 @@ const ModernHeroSection = () => {
     }
   ];
 
-  // Duplicate features for infinite scroll
+  // Publicités section
+  const ads = [
+    {
+      id: 1,
+      title: 'Formation Expert',
+      description: 'Devenez expert en 30 jours',
+      icon: Star,
+      color: 'from-yellow-400 to-orange-500',
+      badge: 'PROMO -50%'
+    },
+    {
+      id: 2,
+      title: 'Coaching Pro',
+      description: 'Accompagnement personnalisé',
+      icon: Trophy,
+      color: 'from-green-400 to-emerald-500',
+      badge: 'NOUVEAU'
+    },
+    {
+      id: 3,
+      title: 'Stratégie Business',
+      description: 'Plan sur mesure pour votre entreprise',
+      icon: Target,
+      color: 'from-red-400 to-pink-500',
+      badge: 'POPULAIRE'
+    },
+    {
+      id: 4,
+      title: 'Automation',
+      description: 'Automatisez vos processus',
+      icon: Zap,
+      color: 'from-blue-400 to-cyan-500',
+      badge: 'TENDANCE'
+    },
+    {
+      id: 5,
+      title: 'Marketing Digital',
+      description: 'Boostez votre présence en ligne',
+      icon: Star,
+      color: 'from-purple-400 to-violet-500',
+      badge: 'HOT'
+    },
+    {
+      id: 6,
+      title: 'Financement',
+      description: 'Solutions de financement',
+      icon: Trophy,
+      color: 'from-indigo-400 to-blue-500',
+      badge: 'EXCLUSIF'
+    }
+  ];
+
+  // Duplicate features and ads for infinite scroll
   const duplicatedFeatures = [...features, ...features];
+  const duplicatedAds = [...ads, ...ads];
 
   const handleCardClick = (feature: typeof features[0]) => {
     if (expandedCard === feature.id) {
@@ -76,7 +129,7 @@ const ModernHeroSection = () => {
       </div>
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto text-center mb-16 relative z-10">
+      <div className="max-w-7xl mx-auto text-center mb-12 relative z-10">
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
           <span className="text-orange-400">IDEAL</span> Platform
         </h1>
@@ -85,10 +138,10 @@ const ModernHeroSection = () => {
         </p>
       </div>
 
-      {/* Scrolling Features Container */}
-      <div className="max-w-7xl mx-auto mb-16 relative z-10">
+      {/* Main Features - Reduced size */}
+      <div className="max-w-7xl mx-auto mb-12 relative z-10">
         <div className="relative overflow-hidden">
-          <div className="flex animate-scroll-right space-x-8">
+          <div className="flex animate-scroll-right space-x-6">
             {duplicatedFeatures.map((feature, index) => {
               const IconComponent = feature.icon;
               const isExpanded = expandedCard === feature.id;
@@ -100,13 +153,13 @@ const ModernHeroSection = () => {
                     relative overflow-hidden cursor-pointer flex-shrink-0
                     transition-all duration-700 ease-in-out
                     ${isExpanded 
-                      ? 'scale-110 z-50 w-96' 
-                      : 'hover:scale-105 w-80'
+                      ? 'scale-110 z-50 w-80' 
+                      : 'hover:scale-105 w-64'
                     }
                   `}
                   onClick={() => handleCardClick(feature)}
                   style={{ 
-                    height: isExpanded ? '500px' : '400px',
+                    height: isExpanded ? '400px' : '320px',
                   }}
                 >
                   {/* Mirror Card Container */}
@@ -133,28 +186,28 @@ const ModernHeroSection = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm rounded-3xl"></div>
 
                     {/* Content */}
-                    <div className="relative h-full flex flex-col justify-between p-8 text-white z-10">
+                    <div className="relative h-full flex flex-col justify-between p-6 text-white z-10">
                       {/* Close button for expanded state */}
                       {isExpanded && (
                         <button
                           onClick={closeExpanded}
                           className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200 border border-white/20"
                         >
-                          <X className="h-6 w-6" />
+                          <X className="h-5 w-5" />
                         </button>
                       )}
 
                       {/* Icon and Title */}
-                      <div className="flex flex-col items-center space-y-4 text-center">
-                        <div className="p-6 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 shadow-xl animate-float">
-                          <IconComponent className="h-12 w-12 text-white drop-shadow-lg" />
+                      <div className="flex flex-col items-center space-y-3 text-center">
+                        <div className="p-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30 shadow-xl animate-float">
+                          <IconComponent className="h-8 w-8 text-white drop-shadow-lg" />
                         </div>
-                        <h3 className="text-2xl font-bold text-white drop-shadow-lg">{feature.title}</h3>
+                        <h3 className="text-xl font-bold text-white drop-shadow-lg">{feature.title}</h3>
                       </div>
 
                       {/* Description */}
-                      <div className="space-y-4 text-center">
-                        <p className={`text-lg leading-relaxed text-white/90 drop-shadow-md ${isExpanded ? 'text-xl' : ''}`}>
+                      <div className="space-y-3 text-center">
+                        <p className={`text-sm leading-relaxed text-white/90 drop-shadow-md ${isExpanded ? 'text-base' : ''}`}>
                           {feature.description}
                         </p>
                         
@@ -165,7 +218,7 @@ const ModernHeroSection = () => {
                                 e.stopPropagation();
                                 navigate(feature.route);
                               }}
-                              className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl"
+                              className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-6 py-2 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl text-sm"
                             >
                               Découvrir →
                             </button>
@@ -177,6 +230,53 @@ const ModernHeroSection = () => {
                     {/* Shimmer effect */}
                     <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500">
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Ads Section - Smaller and opposite direction */}
+      <div className="max-w-7xl mx-auto mb-16 relative z-10">
+        <div className="relative overflow-hidden">
+          <div className="flex animate-scroll-left space-x-4">
+            {duplicatedAds.map((ad, index) => {
+              const IconComponent = ad.icon;
+              
+              return (
+                <div
+                  key={`ad-${ad.id}-${index}`}
+                  className="relative overflow-hidden cursor-pointer flex-shrink-0 w-48 h-32 hover:scale-105 transition-all duration-300"
+                >
+                  {/* Ad Card Container */}
+                  <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
+                    {/* Glossy overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40"></div>
+                    
+                    {/* Gradient background */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${ad.color} opacity-70 rounded-2xl`} />
+                    <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/30 rounded-2xl" />
+
+                    {/* Badge */}
+                    <div className="absolute top-2 right-2 bg-white/90 text-black text-xs font-bold px-2 py-1 rounded-full backdrop-blur-sm">
+                      {ad.badge}
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative h-full flex flex-col justify-center items-center p-4 text-white z-10 text-center">
+                      <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 shadow-lg mb-2">
+                        <IconComponent className="h-5 w-5 text-white" />
+                      </div>
+                      <h4 className="text-sm font-bold text-white drop-shadow-lg mb-1">{ad.title}</h4>
+                      <p className="text-xs text-white/80 drop-shadow-md">{ad.description}</p>
+                    </div>
+
+                    {/* Hover effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12 animate-shimmer"></div>
                     </div>
                   </div>
                 </div>
@@ -222,9 +322,14 @@ const ModernHeroSection = () => {
           100% { transform: translateX(-50%); }
         }
         
+        @keyframes scroll-left {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(2deg); }
+          50% { transform: translateY(-8px) rotate(1deg); }
         }
         
         @keyframes shimmer {
@@ -233,10 +338,15 @@ const ModernHeroSection = () => {
         }
         
         .animate-scroll-right {
-          animation: scroll-right 20s linear infinite;
+          animation: scroll-right 25s linear infinite;
         }
         
-        .animate-scroll-right:hover {
+        .animate-scroll-left {
+          animation: scroll-left 15s linear infinite;
+        }
+        
+        .animate-scroll-right:hover,
+        .animate-scroll-left:hover {
           animation-play-state: paused;
         }
         
