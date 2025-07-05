@@ -50,6 +50,9 @@ const ModernHeroSection = () => {
     }
   ];
 
+  // Duplicate features for infinite scroll
+  const duplicatedFeatures = [...features, ...features];
+
   const handleCardClick = (feature: typeof features[0]) => {
     if (expandedCard === feature.id) {
       navigate(feature.route);
@@ -64,7 +67,7 @@ const ModernHeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl mx-auto text-center mb-16">
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
@@ -75,88 +78,89 @@ const ModernHeroSection = () => {
         </p>
       </div>
 
-      {/* Features Grid */}
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => {
-            const IconComponent = feature.icon;
-            const isExpanded = expandedCard === feature.id;
-            
-            return (
-              <div
-                key={feature.id}
-                className={`
-                  relative overflow-hidden cursor-pointer
-                  transition-all duration-700 ease-in-out shadow-xl
-                  animate-pulse
-                  ${isExpanded 
-                    ? 'scale-110 z-50 md:col-span-2 lg:col-span-2' 
-                    : 'hover:scale-105 hover:shadow-2xl'
-                  }
-                `}
-                onClick={() => handleCardClick(feature)}
-                style={{ 
-                  height: isExpanded ? '500px' : '400px',
-                  clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
-                  transform: `rotate(${index % 2 === 0 ? '2deg' : '-2deg'}) translateY(${Math.sin(Date.now() * 0.001 + index) * 10}px)`,
-                  animation: `float-${index} 3s ease-in-out infinite alternate`
-                }}
-              >
-                {/* Background Image */}
+      {/* Scrolling Features Container */}
+      <div className="max-w-7xl mx-auto mb-16">
+        <div className="relative overflow-hidden">
+          <div className="flex animate-scroll-right space-x-8">
+            {duplicatedFeatures.map((feature, index) => {
+              const IconComponent = feature.icon;
+              const isExpanded = expandedCard === feature.id;
+              
+              return (
                 <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${feature.image})` }}
+                  key={`${feature.id}-${index}`}
+                  className={`
+                    relative overflow-hidden cursor-pointer flex-shrink-0
+                    transition-all duration-700 ease-in-out shadow-xl
+                    ${isExpanded 
+                      ? 'scale-110 z-50 w-96' 
+                      : 'hover:scale-105 hover:shadow-2xl w-80'
+                    }
+                  `}
+                  onClick={() => handleCardClick(feature)}
+                  style={{ 
+                    height: isExpanded ? '500px' : '400px',
+                    clipPath: 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
+                    transform: `rotateY(${index % 2 === 0 ? '5deg' : '-5deg'}) rotateX(10deg)`,
+                    animation: `float-${index % 4} 3s ease-in-out infinite alternate, pulse 2s ease-in-out infinite alternate`
+                  }}
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-80`} />
-                </div>
-
-                {/* Content */}
-                <div className="relative h-full flex flex-col justify-between p-8 text-white">
-                  {/* Close button for expanded state */}
-                  {isExpanded && (
-                    <button
-                      onClick={closeExpanded}
-                      className="absolute top-4 right-4 p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors duration-200"
-                    >
-                      <X className="h-6 w-6" />
-                    </button>
-                  )}
-
-                  {/* Icon and Title */}
-                  <div className="flex flex-col items-center space-y-4 text-center">
-                    <div className="p-4 bg-white/20 rounded-xl backdrop-blur-sm animate-bounce">
-                      <IconComponent className="h-10 w-10" />
-                    </div>
-                    <h3 className="text-2xl font-bold">{feature.title}</h3>
+                  {/* Background Image */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${feature.image})` }}
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-80`} />
                   </div>
 
-                  {/* Description */}
-                  <div className="space-y-4 text-center">
-                    <p className={`text-lg leading-relaxed ${isExpanded ? 'text-xl' : ''}`}>
-                      {feature.description}
-                    </p>
-                    
+                  {/* Content */}
+                  <div className="relative h-full flex flex-col justify-between p-8 text-white">
+                    {/* Close button for expanded state */}
                     {isExpanded && (
-                      <div className="animate-fade-in">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(feature.route);
-                          }}
-                          className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105"
-                        >
-                          Découvrir →
-                        </button>
-                      </div>
+                      <button
+                        onClick={closeExpanded}
+                        className="absolute top-4 right-4 p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors duration-200"
+                      >
+                        <X className="h-6 w-6" />
+                      </button>
                     )}
-                  </div>
-                </div>
 
-                {/* Moving overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 animate-pulse" />
-              </div>
-            );
-          })}
+                    {/* Icon and Title */}
+                    <div className="flex flex-col items-center space-y-4 text-center">
+                      <div className="p-4 bg-white/20 rounded-xl backdrop-blur-sm animate-bounce">
+                        <IconComponent className="h-10 w-10" />
+                      </div>
+                      <h3 className="text-2xl font-bold">{feature.title}</h3>
+                    </div>
+
+                    {/* Description */}
+                    <div className="space-y-4 text-center">
+                      <p className={`text-lg leading-relaxed ${isExpanded ? 'text-xl' : ''}`}>
+                        {feature.description}
+                      </p>
+                      
+                      {isExpanded && (
+                        <div className="animate-fade-in">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(feature.route);
+                            }}
+                            className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105"
+                          >
+                            Découvrir →
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Moving overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -188,21 +192,34 @@ const ModernHeroSection = () => {
 
       <style>
         {`
+        @keyframes scroll-right {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        
         @keyframes float-0 {
-          0% { transform: rotate(2deg) translateY(0px); }
-          100% { transform: rotate(2deg) translateY(-20px); }
+          0% { transform: rotateY(5deg) rotateX(10deg) translateY(0px); }
+          100% { transform: rotateY(5deg) rotateX(10deg) translateY(-20px); }
         }
         @keyframes float-1 {
-          0% { transform: rotate(-2deg) translateY(-10px); }
-          100% { transform: rotate(-2deg) translateY(10px); }
+          0% { transform: rotateY(-5deg) rotateX(10deg) translateY(-10px); }
+          100% { transform: rotateY(-5deg) rotateX(10deg) translateY(10px); }
         }
         @keyframes float-2 {
-          0% { transform: rotate(2deg) translateY(-5px); }
-          100% { transform: rotate(2deg) translateY(-25px); }
+          0% { transform: rotateY(5deg) rotateX(10deg) translateY(-5px); }
+          100% { transform: rotateY(5deg) rotateX(10deg) translateY(-25px); }
         }
         @keyframes float-3 {
-          0% { transform: rotate(-2deg) translateY(-15px); }
-          100% { transform: rotate(-2deg) translateY(5px); }
+          0% { transform: rotateY(-5deg) rotateX(10deg) translateY(-15px); }
+          100% { transform: rotateY(-5deg) rotateX(10deg) translateY(5px); }
+        }
+        
+        .animate-scroll-right {
+          animation: scroll-right 15s linear infinite;
+        }
+        
+        .animate-scroll-right:hover {
+          animation-play-state: paused;
         }
         `}
       </style>
