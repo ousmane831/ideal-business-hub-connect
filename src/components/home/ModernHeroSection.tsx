@@ -186,7 +186,8 @@ const ModernHeroSection = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>
+        {`
         @keyframes float-0 {
           0% { transform: rotate(2deg) translateY(0px); }
           100% { transform: rotate(2deg) translateY(-20px); }
@@ -203,7 +204,8 @@ const ModernHeroSection = () => {
           0% { transform: rotate(-2deg) translateY(-15px); }
           100% { transform: rotate(-2deg) translateY(5px); }
         }
-      `}</style>
+        `}
+      </style>
     </section>
   );
 };
