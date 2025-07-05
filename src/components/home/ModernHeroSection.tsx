@@ -77,8 +77,8 @@ const ModernHeroSection = () => {
 
       {/* Features Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {features.map((feature) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => {
             const IconComponent = feature.icon;
             const isExpanded = expandedCard === feature.id;
             
@@ -86,17 +86,20 @@ const ModernHeroSection = () => {
               <div
                 key={feature.id}
                 className={`
-                  relative overflow-hidden transform rotate-2 hover:rotate-0 cursor-pointer
-                  transition-all duration-500 ease-in-out shadow-xl
+                  relative overflow-hidden cursor-pointer
+                  transition-all duration-700 ease-in-out shadow-xl
+                  animate-pulse
                   ${isExpanded 
-                    ? 'scale-105 z-50 md:col-span-2 rotate-0' 
+                    ? 'scale-110 z-50 md:col-span-2 lg:col-span-2' 
                     : 'hover:scale-105 hover:shadow-2xl'
                   }
                 `}
                 onClick={() => handleCardClick(feature)}
                 style={{ 
-                  height: isExpanded ? '400px' : '300px',
-                  clipPath: 'polygon(0 0, 100% 0, 95% 100%, 5% 100%)'
+                  height: isExpanded ? '500px' : '400px',
+                  clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)',
+                  transform: `rotate(${index % 2 === 0 ? '2deg' : '-2deg'}) translateY(${Math.sin(Date.now() * 0.001 + index) * 10}px)`,
+                  animation: `float-${index} 3s ease-in-out infinite alternate`
                 }}
               >
                 {/* Background Image */}
@@ -120,15 +123,15 @@ const ModernHeroSection = () => {
                   )}
 
                   {/* Icon and Title */}
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                      <IconComponent className="h-8 w-8" />
+                  <div className="flex flex-col items-center space-y-4 text-center">
+                    <div className="p-4 bg-white/20 rounded-xl backdrop-blur-sm animate-bounce">
+                      <IconComponent className="h-10 w-10" />
                     </div>
                     <h3 className="text-2xl font-bold">{feature.title}</h3>
                   </div>
 
                   {/* Description */}
-                  <div className="space-y-4">
+                  <div className="space-y-4 text-center">
                     <p className={`text-lg leading-relaxed ${isExpanded ? 'text-xl' : ''}`}>
                       {feature.description}
                     </p>
@@ -149,8 +152,8 @@ const ModernHeroSection = () => {
                   </div>
                 </div>
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                {/* Moving overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 animate-pulse" />
               </div>
             );
           })}
@@ -182,6 +185,25 @@ const ModernHeroSection = () => {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float-0 {
+          0% { transform: rotate(2deg) translateY(0px); }
+          100% { transform: rotate(2deg) translateY(-20px); }
+        }
+        @keyframes float-1 {
+          0% { transform: rotate(-2deg) translateY(-10px); }
+          100% { transform: rotate(-2deg) translateY(10px); }
+        }
+        @keyframes float-2 {
+          0% { transform: rotate(2deg) translateY(-5px); }
+          100% { transform: rotate(2deg) translateY(-25px); }
+        }
+        @keyframes float-3 {
+          0% { transform: rotate(-2deg) translateY(-15px); }
+          100% { transform: rotate(-2deg) translateY(5px); }
+        }
+      `}</style>
     </section>
   );
 };
