@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, User, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import AuthModal from '@/components/auth/AuthModal';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,13 +43,23 @@ const Header = () => {
 
           {/* Actions Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              <User className="h-4 w-4 mr-2" />
-              Connexion
-            </Button>
-            <Button className="bg-orange-600 hover:bg-orange-700" size="sm">
-              Inscription
-            </Button>
+            <AuthModal 
+              trigger={
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Connexion
+                </Button>
+              }
+              defaultMode="login"
+            />
+            <AuthModal 
+              trigger={
+                <Button className="bg-primary hover:bg-primary/90" size="sm">
+                  Inscription
+                </Button>
+              }
+              defaultMode="register"
+            />
             <Button variant="ghost" size="sm">
               <MessageSquare className="h-4 w-4" />
             </Button>
@@ -85,12 +96,22 @@ const Header = () => {
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t">
-                <Button variant="outline" size="sm">
-                  Connexion
-                </Button>
-                <Button className="bg-orange-600 hover:bg-orange-700" size="sm">
-                  Inscription
-                </Button>
+                <AuthModal 
+                  trigger={
+                    <Button variant="outline" size="sm" className="w-full">
+                      Connexion
+                    </Button>
+                  }
+                  defaultMode="login"
+                />
+                <AuthModal 
+                  trigger={
+                    <Button className="bg-primary hover:bg-primary/90 w-full" size="sm">
+                      Inscription
+                    </Button>
+                  }
+                  defaultMode="register"
+                />
               </div>
             </div>
           </div>
