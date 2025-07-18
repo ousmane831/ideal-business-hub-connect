@@ -116,13 +116,13 @@ const AnnonceDetail = () => {
                 <div className="space-y-3">
                   <div className="flex items-center">
                     <Phone className="h-5 w-5 mr-3 text-gray-600" />
-                    <a href={`tel:${annonce.contact.phone}`} className="text-blue-600 hover:underline">
+                    <a href={`tel:${annonce.contact.phone}`} className="text-primary hover:underline">
                       {annonce.contact.phone}
                     </a>
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 mr-3 text-gray-600" />
-                    <a href={`mailto:${annonce.contact.email}`} className="text-blue-600 hover:underline">
+                    <a href={`mailto:${annonce.contact.email}`} className="text-primary hover:underline">
                       {annonce.contact.email}
                     </a>
                   </div>

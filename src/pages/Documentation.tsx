@@ -69,7 +69,7 @@ const Documentation = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
       <Header />
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -88,10 +88,10 @@ const Documentation = () => {
               {resources.map((resource) => {
                 const IconComponent = resource.icon;
                 return (
-                  <div key={resource.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                  <div key={resource.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
                     <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                        <IconComponent className="h-6 w-6 text-purple-600" />
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                        <IconComponent className="h-6 w-6 text-primary" />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900">{resource.title}</h3>
                     </div>
@@ -103,7 +103,7 @@ const Documentation = () => {
                         <a
                           key={index}
                           href={link.url}
-                          className="flex items-center text-purple-600 hover:text-purple-700 text-sm transition-colors"
+                          className="flex items-center text-primary hover:text-primary/80 text-sm transition-colors"
                         >
                           <ExternalLink className="h-4 w-4 mr-2" />
                           {link.name}
@@ -119,7 +119,7 @@ const Documentation = () => {
           {/* Downloadable forms section */}
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Formulaires Téléchargeables</h2>
-            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
                   'Demande de création d\'entreprise',
@@ -132,9 +132,9 @@ const Documentation = () => {
                   <Button
                     key={index}
                     variant="outline"
-                    className="justify-start h-auto p-4 text-left border-purple-200 hover:bg-purple-50"
+                    className="justify-start h-auto p-4 text-left border-primary/20 hover:bg-primary/10"
                   >
-                    <FileText className="h-5 w-5 mr-3 text-purple-600" />
+                    <FileText className="h-5 w-5 mr-3 text-primary" />
                     <span className="text-sm">{form}</span>
                   </Button>
                 ))}
@@ -145,12 +145,12 @@ const Documentation = () => {
           {/* FAQ section */}
           <div>
             <div className="flex items-center mb-6">
-              <HelpCircle className="h-8 w-8 text-purple-600 mr-3" />
+              <HelpCircle className="h-8 w-8 text-primary mr-3" />
               <h2 className="text-2xl font-bold text-gray-900">Questions Fréquentes</h2>
             </div>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                <div key={index} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">{faq.question}</h3>
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
