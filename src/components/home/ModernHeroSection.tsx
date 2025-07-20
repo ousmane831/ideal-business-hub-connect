@@ -7,6 +7,14 @@ const ModernHeroSection = () => {
   const navigate = useNavigate();
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
+  // Images facilement modifiables - remplacez les URLs pour changer les images
+  const cardImages = {
+    annonces: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    documentation: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    profils: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    actualites: 'https://images.unsplash.com/photo-1504711434969-e33886168f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  };
+
   const features = [
     {
       id: 1,
@@ -16,7 +24,7 @@ const ModernHeroSection = () => {
       color: 'from-blue-400 to-blue-600',
       bgColor: 'bg-gradient-to-br from-blue-50 to-blue-100',
       route: '/annonces',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+      image: cardImages.annonces
     },
     {
       id: 2,
@@ -26,7 +34,7 @@ const ModernHeroSection = () => {
       color: 'from-purple-400 to-purple-600',
       bgColor: 'bg-gradient-to-br from-purple-50 to-purple-100',
       route: '/documentation',
-      image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+      image: cardImages.documentation
     },
     {
       id: 3,
@@ -36,7 +44,7 @@ const ModernHeroSection = () => {
       color: 'from-pink-400 to-pink-600',
       bgColor: 'bg-gradient-to-br from-pink-50 to-pink-100',
       route: '/profils',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+      image: cardImages.profils
     },
     {
       id: 4,
@@ -46,7 +54,7 @@ const ModernHeroSection = () => {
       color: 'from-indigo-400 to-indigo-600',
       bgColor: 'bg-gradient-to-br from-indigo-50 to-indigo-100',
       route: '/actualites',
-      image: 'https://images.unsplash.com/photo-1504711434969-e33886168f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+      image: cardImages.actualites
     }
   ];
 
@@ -151,7 +159,7 @@ const ModernHeroSection = () => {
                   key={`${feature.id}-${index}`}
                   className={`
                     relative overflow-hidden cursor-pointer flex-shrink-0
-                    transition-all duration-700 ease-in-out
+                    transition-all duration-300 ease-in-out
                     ${isExpanded 
                       ? 'scale-110 z-50 w-80' 
                       : 'hover:scale-105 w-56'
@@ -338,11 +346,11 @@ const ModernHeroSection = () => {
         }
         
         .animate-scroll-right {
-          animation: scroll-right 25s linear infinite;
+          animation: scroll-right 15s linear infinite;
         }
         
         .animate-scroll-left {
-          animation: scroll-left 15s linear infinite;
+          animation: scroll-left 10s linear infinite;
         }
         
         .animate-scroll-right:hover,
