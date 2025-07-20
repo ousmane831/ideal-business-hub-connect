@@ -6,6 +6,7 @@ import { FileText, BookOpen, User, Newspaper, X, Star, Trophy, Target, Zap } fro
 const ModernHeroSection = () => {
   const navigate = useNavigate();
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [selectedAd, setSelectedAd] = useState<number | null>(null);
 
   // Images facilement modifiables - remplacez les URLs pour changer les images
   const cardImages = {
@@ -58,55 +59,37 @@ const ModernHeroSection = () => {
     }
   ];
 
-  // Publicités section
+  // Publicités section - seulement 3 cards
   const ads = [
     {
       id: 1,
       title: 'Formation Expert',
       description: 'Devenez expert en 30 jours',
+      fullDescription: 'Programme complet de formation pour devenir expert reconnu dans votre domaine. Accès à vie aux contenus, certificat officiel et accompagnement personnalisé.',
       icon: Star,
       color: 'from-yellow-400 to-orange-500',
-      badge: 'PROMO -50%'
+      badge: 'PROMO -50%',
+      price: '299€ au lieu de 599€'
     },
     {
       id: 2,
       title: 'Coaching Pro',
       description: 'Accompagnement personnalisé',
+      fullDescription: 'Coaching individuel avec un expert business pour développer votre stratégie et atteindre vos objectifs plus rapidement.',
       icon: Trophy,
       color: 'from-green-400 to-emerald-500',
-      badge: 'NOUVEAU'
+      badge: 'NOUVEAU',
+      price: 'À partir de 150€/h'
     },
     {
       id: 3,
       title: 'Stratégie Business',
       description: 'Plan sur mesure pour votre entreprise',
+      fullDescription: 'Analyse complète de votre business et création d\'un plan stratégique personnalisé pour maximiser votre croissance.',
       icon: Target,
       color: 'from-red-400 to-pink-500',
-      badge: 'POPULAIRE'
-    },
-    {
-      id: 4,
-      title: 'Automation',
-      description: 'Automatisez vos processus',
-      icon: Zap,
-      color: 'from-blue-400 to-cyan-500',
-      badge: 'TENDANCE'
-    },
-    {
-      id: 5,
-      title: 'Marketing Digital',
-      description: 'Boostez votre présence en ligne',
-      icon: Star,
-      color: 'from-purple-400 to-violet-500',
-      badge: 'HOT'
-    },
-    {
-      id: 6,
-      title: 'Financement',
-      description: 'Solutions de financement',
-      icon: Trophy,
-      color: 'from-indigo-400 to-blue-500',
-      badge: 'EXCLUSIF'
+      badge: 'POPULAIRE',
+      price: '499€'
     }
   ];
 
@@ -181,12 +164,11 @@ const ModernHeroSection = () => {
                     {/* Animated border glow */}
                     <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 blur-sm -z-10"></div>
                     
-                    {/* Background Image with mirror effect */}
+                    {/* Background Image sans overlay de couleur */}
                     <div
                       className="absolute inset-0 bg-cover bg-center rounded-3xl"
                       style={{ backgroundImage: `url(${feature.image})` }}
                     >
-                      <div className={`absolute inset-0 bg-gradient-to-t ${feature.color} opacity-60 rounded-3xl`} />
                       <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40 rounded-3xl" />
                     </div>
 
@@ -247,52 +229,97 @@ const ModernHeroSection = () => {
         </div>
       </div>
 
-      {/* Ads Section - Smaller and opposite direction */}
+      {/* Ads Section - 3 cards plus grandes et cliquables */}
       <div className="max-w-7xl mx-auto mb-8 relative z-10">
-        <div className="relative overflow-hidden">
-          <div className="flex animate-scroll-left space-x-4">
-            {duplicatedAds.map((ad, index) => {
+        <div className="flex justify-center space-x-6">
+          {ads.map((ad) => {
+            const IconComponent = ad.icon;
+            
+            return (
+              <div
+                key={ad.id}
+                className="relative overflow-hidden cursor-pointer flex-shrink-0 w-64 h-40 hover:scale-105 transition-all duration-300"
+                onClick={() => setSelectedAd(ad.id)}
+              >
+                {/* Ad Card Container */}
+                <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
+                  {/* Glossy overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40"></div>
+                  
+                  {/* Gradient background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${ad.color} opacity-70 rounded-2xl`} />
+                  <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/30 rounded-2xl" />
+
+                  {/* Badge */}
+                  <div className="absolute top-2 right-2 bg-white/90 text-black text-xs font-bold px-2 py-1 rounded-full backdrop-blur-sm">
+                    {ad.badge}
+                  </div>
+
+                  {/* Content */}
+                  <div className="relative h-full flex flex-col justify-center items-center p-4 text-white z-10 text-center">
+                    <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 shadow-lg mb-2">
+                      <IconComponent className="h-6 w-6 text-white" />
+                    </div>
+                    <h4 className="text-sm font-bold text-white drop-shadow-lg mb-1">{ad.title}</h4>
+                    <p className="text-xs text-white/80 drop-shadow-md leading-tight mb-2">{ad.description}</p>
+                    <p className="text-xs text-white font-semibold">{ad.price}</p>
+                  </div>
+
+                  {/* Hover effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12 animate-shimmer"></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Modal pour les détails de la publicité */}
+      {selectedAd && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+            {(() => {
+              const ad = ads.find(a => a.id === selectedAd);
+              if (!ad) return null;
               const IconComponent = ad.icon;
               
               return (
-                <div
-                  key={`ad-${ad.id}-${index}`}
-                  className="relative overflow-hidden cursor-pointer flex-shrink-0 w-40 h-24 hover:scale-105 transition-all duration-300"
-                >
-                  {/* Ad Card Container */}
-                  <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
-                    {/* Glossy overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40"></div>
+                <>
+                  <div className="flex justify-between items-start mb-6">
+                    <div className={`p-3 bg-gradient-to-br ${ad.color} rounded-2xl shadow-xl`}>
+                      <IconComponent className="h-8 w-8 text-white" />
+                    </div>
+                    <button
+                      onClick={() => setSelectedAd(null)}
+                      className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors duration-200 border border-white/20"
+                    >
+                      <X className="h-4 w-4 text-white" />
+                    </button>
+                  </div>
+                  
+                  <div className="text-white">
+                    <div className="flex items-center gap-2 mb-4">
+                      <h3 className="text-xl font-bold">{ad.title}</h3>
+                      <span className="px-2 py-1 bg-white/20 text-xs font-bold rounded-full">{ad.badge}</span>
+                    </div>
                     
-                    {/* Gradient background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${ad.color} opacity-70 rounded-2xl`} />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/30 rounded-2xl" />
-
-                    {/* Badge */}
-                    <div className="absolute top-1 right-1 bg-white/90 text-black text-xs font-bold px-1.5 py-0.5 rounded-full backdrop-blur-sm">
-                      {ad.badge}
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative h-full flex flex-col justify-center items-center p-3 text-white z-10 text-center">
-                      <div className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 shadow-lg mb-1">
-                        <IconComponent className="h-4 w-4 text-white" />
-                      </div>
-                      <h4 className="text-xs font-bold text-white drop-shadow-lg mb-0.5">{ad.title}</h4>
-                      <p className="text-xs text-white/80 drop-shadow-md leading-tight">{ad.description}</p>
-                    </div>
-
-                    {/* Hover effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent skew-x-12 animate-shimmer"></div>
+                    <p className="text-white/80 mb-4 leading-relaxed">{ad.fullDescription}</p>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-bold text-orange-400">{ad.price}</span>
+                      <button className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-orange-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-xl">
+                        Commander
+                      </button>
                     </div>
                   </div>
-                </div>
+                </>
               );
-            })}
+            })()}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Bottom CTA - Reduced size and spacing */}
       <div className="max-w-4xl mx-auto text-center mt-8 relative z-10">
