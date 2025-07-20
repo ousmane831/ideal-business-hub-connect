@@ -16,6 +16,13 @@ const ModernHeroSection = () => {
     actualites: 'https://images.unsplash.com/photo-1504711434969-e33886168f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
   };
 
+  // Images pour les publicités - images claires et nettes
+  const adImages = {
+    formation: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    coaching: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    strategie: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+  };
+
   const features = [
     {
       id: 1,
@@ -69,7 +76,8 @@ const ModernHeroSection = () => {
       icon: Star,
       color: 'from-yellow-400 to-orange-500',
       badge: 'PROMO -50%',
-      price: '299€ au lieu de 599€'
+      price: '299€ au lieu de 599€',
+      image: adImages.formation
     },
     {
       id: 2,
@@ -79,7 +87,8 @@ const ModernHeroSection = () => {
       icon: Trophy,
       color: 'from-green-400 to-emerald-500',
       badge: 'NOUVEAU',
-      price: 'À partir de 150€/h'
+      price: 'À partir de 150€/h',
+      image: adImages.coaching
     },
     {
       id: 3,
@@ -89,7 +98,8 @@ const ModernHeroSection = () => {
       icon: Target,
       color: 'from-red-400 to-pink-500',
       badge: 'POPULAIRE',
-      price: '499€'
+      price: '499€',
+      image: adImages.strategie
     }
   ];
 
@@ -231,24 +241,29 @@ const ModernHeroSection = () => {
 
       {/* Ads Section - 3 cards plus grandes et cliquables */}
       <div className="max-w-7xl mx-auto mb-8 relative z-10">
-        <div className="flex justify-center space-x-6">
-          {ads.map((ad) => {
+        <div className="relative overflow-hidden">
+          <div className="flex animate-scroll-left space-x-6">
+            {duplicatedAds.map((ad, index) => {
             const IconComponent = ad.icon;
             
-            return (
-              <div
-                key={ad.id}
-                className="relative overflow-hidden cursor-pointer flex-shrink-0 w-64 h-40 hover:scale-105 transition-all duration-300"
-                onClick={() => setSelectedAd(ad.id)}
-              >
-                {/* Ad Card Container */}
-                <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
-                  {/* Glossy overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40"></div>
-                  
-                  {/* Gradient background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${ad.color} opacity-70 rounded-2xl`} />
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/30 rounded-2xl" />
+              return (
+                <div
+                  key={`${ad.id}-${index}`}
+                  className="relative overflow-hidden cursor-pointer flex-shrink-0 w-64 h-40 hover:scale-105 transition-all duration-200"
+                  onClick={() => setSelectedAd(ad.id)}
+                >
+                  {/* Ad Card Container */}
+                  <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
+                    {/* Glossy overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent opacity-40"></div>
+                    
+                    {/* Background Image */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center rounded-2xl"
+                      style={{ backgroundImage: `url(${ad.image})` }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40 rounded-2xl" />
+                    </div>
 
                   {/* Badge */}
                   <div className="absolute top-2 right-2 bg-white/90 text-black text-xs font-bold px-2 py-1 rounded-full backdrop-blur-sm">
@@ -272,7 +287,8 @@ const ModernHeroSection = () => {
                 </div>
               </div>
             );
-          })}
+            })}
+          </div>
         </div>
       </div>
 
