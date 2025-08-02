@@ -174,12 +174,12 @@ const ModernHeroSection = () => {
                     {/* Animated border glow */}
                     <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 blur-sm -z-10"></div>
                     
-                    {/* Background Image sans overlay de couleur */}
+                    {/* Background Image avec overlay orange transparent */}
                     <div
                       className="absolute inset-0 bg-cover bg-center rounded-3xl"
                       style={{ backgroundImage: `url(${feature.image})` }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40 rounded-3xl" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/30 via-orange-400/20 to-orange-600/40 rounded-3xl" />
                     </div>
 
                     {/* Glass effect overlay */}
