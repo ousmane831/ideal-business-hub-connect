@@ -131,10 +131,10 @@ const ModernHeroSection = () => {
 
       {/* Header - Reduced size */}
       <div className="max-w-7xl mx-auto text-center mb-8 relative z-10">
-        <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
-          <span className="text-orange-400">IDEAL</span> Platform
+        <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <span className="text-orange-500">IDEAL</span> Platform
         </h1>
-        <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
           Votre passerelle vers le succès entrepreneurial
         </p>
       </div>
