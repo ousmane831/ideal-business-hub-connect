@@ -121,7 +121,7 @@ const ModernHeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black py-6 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+    <section className="min-h-screen bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 py-6 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
       {/* Animated background */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
