@@ -34,11 +34,11 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="relative text-white bg-orange-500/90 hover:bg-black px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-110 hover:rotate-1 hover:shadow-lg hover:shadow-black/50 group overflow-hidden"
+                className="relative text-white bg-orange-500/90 hover:bg-black px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 transform hover:scale-110 hover:rotate-1 hover:shadow-lg hover:shadow-black/50 group overflow-hidden"
               >
                 <span className="relative z-10">{item.name}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-150 origin-left"></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
                 </div>
               </Link>
@@ -93,11 +93,11 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="relative text-white bg-orange-500/90 hover:bg-black px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg group overflow-hidden"
+                  className="relative text-white bg-orange-500/90 hover:bg-black px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 transform hover:scale-105 hover:shadow-lg group overflow-hidden"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <span className="relative z-10">{item.name}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-150 origin-left"></div>
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t">
@@ -130,7 +130,7 @@ const Header = () => {
         }
         
         .animate-shimmer {
-          animation: shimmer 1.5s ease-in-out infinite;
+          animation: shimmer 0.8s ease-in-out infinite;
         }
       `}</style>
     </header>
