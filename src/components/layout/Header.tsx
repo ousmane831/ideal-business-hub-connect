@@ -34,7 +34,7 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="relative text-white bg-orange-500/90 hover:bg-orange-600 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-110 hover:rotate-1 hover:shadow-lg hover:shadow-orange-300/50 group overflow-hidden"
+                className="relative text-white bg-orange-500/90 hover:bg-black px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-110 hover:rotate-1 hover:shadow-lg hover:shadow-black/50 group overflow-hidden"
               >
                 <span className="relative z-10">{item.name}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -93,7 +93,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="relative text-white bg-orange-500/90 hover:bg-orange-600 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg group overflow-hidden"
+                  className="relative text-white bg-orange-500/90 hover:bg-black px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg group overflow-hidden"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <span className="relative z-10">{item.name}</span>

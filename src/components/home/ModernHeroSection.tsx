@@ -342,10 +342,10 @@ const ModernHeroSection = () => {
         <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl"></div>
           <div className="relative">
-            <h2 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold text-orange-500 mb-3">
               Prêt à transformer votre business ?
             </h2>
-            <p className="text-lg text-gray-300 mb-6">
+            <p className="text-lg text-orange-400 mb-6">
               Rejoignez des milliers d'entrepreneurs qui font confiance à IDEAL Platform
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
