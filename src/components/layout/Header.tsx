@@ -29,14 +29,18 @@ const Header = () => {
           </div>
 
           {/* Navigation Desktop */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-2">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="relative text-white bg-orange-500/90 hover:bg-orange-600 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-110 hover:rotate-1 hover:shadow-lg hover:shadow-orange-300/50 group overflow-hidden"
               >
-                {item.name}
+                <span className="relative z-10">{item.name}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
+                </div>
               </Link>
             ))}
           </nav>
@@ -89,10 +93,11 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium"
+                  className="relative text-white bg-orange-500/90 hover:bg-orange-600 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg group overflow-hidden"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.name}
+                  <span className="relative z-10">{item.name}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t">
@@ -117,6 +122,17 @@ const Header = () => {
           </div>
         )}
       </div>
+      
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(12deg); }
+          100% { transform: translateX(200%) skewX(12deg); }
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 1.5s ease-in-out infinite;
+        }
+      `}</style>
     </header>
   );
 };
