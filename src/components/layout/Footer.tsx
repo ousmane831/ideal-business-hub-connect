@@ -9,9 +9,16 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo et description */}
           <div className="col-span-1 md:col-span-2">
-            <div className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold text-xl inline-block mb-4">
-              IDEAL
-            </div>
+            <div className="flex-shrink-0">
+                      <Link to="/" className="flex items-center">
+                        <img
+                          src="logo/logo_ideal2.PNG"
+                          alt="Logo IDEAL"
+                          className="h-[64px] w-auto"
+            
+                        />
+                      </Link>
+                    </div>
             <p className="text-gray-300 text-sm mb-4">
               Plateforme de mise en relation d'affaires, facilitant les opportunités d'investissement 
               et l'accès aux services administratifs pour les entrepreneurs africains.

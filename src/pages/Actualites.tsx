@@ -4,70 +4,74 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Calendar, MapPin, Clock, Tag, ExternalLink } from 'lucide-react';
+import { useEffect } from 'react';
+import { getEvenements } from '@/api';
+
 
 const Actualites = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const categories = [
-    { id: 'all', name: 'Toutes les actualités' },
-    { id: 'salons', name: 'Salons & Foires' },
-    { id: 'evenements', name: 'Événements Business' },
-    { id: 'reglementations', name: 'Réglementations' },
-    { id: 'opportunites', name: 'Opportunités' },
-  ];
+      const categories = [
+          { id: 'all', name: 'Toutes les actualités' },
+          { id: 'opportunites', name: "Opportunités d'affaires" },
+          { id: 'networking', name: 'Networking' }, 
+          { id: 'formation', name: 'Formation' },
+          { id: 'conference', name: 'Conférence' },
+          { id: 'atelier', name: 'Atelier' }, 
+    ];
 
-  const mockNews = [
-    {
-      id: 1,
-      title: 'Salon International de l\'Agriculture de Dakar 2024',
-      category: 'salons',
-      date: '2024-03-15',
-      location: 'Centre International de Conférences Abdou Diouf, Dakar',
-      time: '09:00 - 18:00',
-      description: 'Le plus grand salon agricole de l\'Afrique de l\'Ouest réunit les acteurs du secteur pour présenter les innovations et créer des partenariats.',
-      image: '/placeholder.svg',
-      link: 'https://salon-agriculture-dakar.com',
-      tags: ['Agriculture', 'Innovation', 'Partenariats']
-    },
-    {
-      id: 2,
-      title: 'Forum des Investisseurs Africains 2024',
-      category: 'evenements',
-      date: '2024-02-28',
-      location: 'Hôtel Radisson Blu, Abidjan',
-      time: '08:30 - 17:00',
-      description: 'Rencontre entre investisseurs et porteurs de projets innovants en Afrique. Opportunités de financement et networking.',
-      image: '/placeholder.svg',
-      link: 'https://forum-investisseurs-afrique.com',
-      tags: ['Investissement', 'Financement', 'Innovation']
-    },
-    {
-      id: 3,
-      title: 'Nouvelles réglementations douanières CEDEAO',
-      category: 'reglementations',
-      date: '2024-02-20',
-      location: 'En ligne',
-      time: 'Toute la journée',
-      description: 'Mise à jour des procédures douanières dans l\'espace CEDEAO. Formation gratuite pour les transitaires et importateurs.',
-      image: '/placeholder.svg',
-      link: 'https://cedeao-douanes.org',
-      tags: ['Douanes', 'CEDEAO', 'Formation']
-    },
-    {
-      id: 4,
-      title: 'Foire Commerciale de Bamako 2024',
-      category: 'salons',
-      date: '2024-04-10',
-      location: 'Palais des Congrès, Bamako',
-      time: '10:00 - 19:00',
-      description: 'Exposition commerciale majeure du Mali présentant les produits locaux et les opportunités d\'exportation.',
-      image: '/placeholder.svg',
-      link: 'https://foire-bamako.ml',
-      tags: ['Commerce', 'Exportation', 'Produits locaux']
-    }
-  ];
 
-  const upcomingEvents = mockNews.filter(news => new Date(news.date) > new Date()).slice(0, 3);
+    const [news, setEvenements] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      const fetchEvenements = async () => {
+        try {
+          const response = await getEvenements();
+          console.log(response.data);
+          setEvenements(response.data);
+        } catch (err) {
+          setError('Impossible de charger les evenements.');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+    fetchEvenements();
+  }, []);
+  
+
+        const upcomingEvents = news
+        .filter((event) => {
+          const eventDate = new Date(event.date);
+          const today = new Date();
+          const timeDiff = eventDate.getTime() - today.getTime();
+          const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+          return daysDiff >= 0 && daysDiff <= 15;
+        })
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .slice(0, 3);
+
+
+
+  const filteredNews = selectedCategory === 'all'
+  ? news
+  : news.filter(news => news.categorie === selectedCategory);
+
+if (loading) {
+  return (
+    <div className="text-center mt-10 text-gray-500">Chargement des evenements...</div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="text-center mt-10 text-red-500">{error}</div>
+  );
+}
+
 
   return (
     <div className="min-h-screen">
@@ -91,14 +95,14 @@ const Actualites = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {upcomingEvents.map((event) => (
                 <div key={event.id} className="bg-white rounded-lg p-4 shadow-sm">
-                  <h3 className="font-semibold text-gray-900 text-sm mb-2">{event.title}</h3>
+                  <h3 className="font-semibold text-gray-900 text-sm mb-2">{event.titre}</h3>
                   <div className="flex items-center text-xs text-gray-600 mb-1">
                     <Calendar className="h-3 w-3 mr-1" />
                     {event.date}
                   </div>
                   <div className="flex items-center text-xs text-gray-600">
                     <MapPin className="h-3 w-3 mr-1" />
-                    {event.location}
+                    {event.lieu}
                   </div>
                 </div>
               ))}
@@ -107,38 +111,40 @@ const Actualites = () => {
 
           {/* Categories filter */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {categories.map((category) => (
+            {categories.map((categorie) => (
               <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
+                key={categorie.id}
+                onClick={() => setSelectedCategory(categorie.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === category.id
-                    ? 'bg-orange-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  selectedCategory === categorie.id
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-primary/10'
                 }`}
               >
-                {category.name}
+                {categorie.name}
               </button>
             ))}
           </div>
 
           {/* News grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockNews.map((news) => (
+            {filteredNews.map((news) => (
+            
               <div key={news.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="h-48 bg-gray-200 relative">
                   <img 
-                    src={news.image} 
-                    alt={news.title}
+                    src={news.image_url || '/placeholder-image.png'} 
+                    alt={news.titre}
                     className="w-full h-full object-cover"
                   />
                   <span className="absolute top-2 right-2 px-2 py-1 bg-orange-600 text-white text-xs font-medium rounded">
-                    {categories.find(c => c.id === news.category)?.name}
-                  </span>
+                  {categories.find(c => c.id === news.categorie)?.name || news.categorie}
+                </span>
+
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">{news.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">{news.titre}</h3>
                   
                   <div className="space-y-2 mb-4 text-sm text-gray-600">
                     <div className="flex items-center">
@@ -147,11 +153,11 @@ const Actualites = () => {
                     </div>
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-2" />
-                      {news.time}
+                      {news.heure_debut} - {news.heure_fin}
                     </div>
                     <div className="flex items-center">
                       <MapPin className="h-4 w-4 mr-2" />
-                      {news.location}
+                      {news.lieu}
                     </div>
                   </div>
                   
@@ -166,10 +172,17 @@ const Actualites = () => {
                     ))}
                   </div>
                   
-                  <Button className="w-full bg-orange-600 hover:bg-orange-700" size="sm">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    En savoir plus
-                  </Button>
+                  <a
+                href={news.lien_inscription}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="w-full bg-orange-600 hover:bg-orange-700" size="sm">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  S'inscrire
+                </Button>
+              </a>
+
                 </div>
               </div>
             ))}

@@ -31,13 +31,13 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
-    title: '',
-    category: 'affaires',
+    titre: '',
+    categorie: '',
     description: '',
     location: '',
     tags: '',
-    author: '',
-    phone: '',
+    auteur: '',
+    contact: '',
     email: '',
   });
 
@@ -63,8 +63,16 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
         });
         return;
       }
+        if (file.size > 10 * 1024 * 1024) {
+          toast({
+            title: "Fichier trop volumineux",
+            description: `Le fichier "${file.name}" dépasse 10 MB.`,
+            variant: "destructive",
+          });
+          return;
+        }
 
-      const newAttachment: Attachment = {
+            const newAttachment: Attachment = {
         id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
         file,
         type
@@ -95,61 +103,68 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    try {
-      const newAnnonce = {
-        id: Date.now(),
-        title: formData.title,
-        category: formData.category,
-        author: formData.author || 'Utilisateur anonyme',
-        location: formData.location,
-        date: new Date().toISOString().split('T')[0],
-        description: formData.description,
-        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        contact: {
-          phone: formData.phone,
-          email: formData.email,
-        },
-        attachments: attachments.map(att => ({
-          type: att.type,
-          name: att.file.name,
-          url: '#'
-        }))
-      };
+  const form = new FormData();
+  form.append('titre', formData.titre);
+  form.append('description', formData.description);
+  form.append('categorie', formData.categorie);
+  form.append('contact', formData.contact);
+  form.append('email', formData.email || '');
+  form.append('tags', formData.tags);
+  form.append('localisation', formData.location);
+  form.append('auteur', formData.auteur); 
 
-      onAnnoncePublished(newAnnonce);
+  attachments.forEach(att => {
+    form.append('pieces_jointes', att.file);
+  });
 
-      // Réinitialiser le formulaire
-      setFormData({
-        title: '',
-        category: 'affaires',
-        description: '',
-        location: '',
-        tags: '',
-        author: '',
-        phone: '',
-        email: '',
-      });
-      setAttachments([]);
+  try {
+    const token = localStorage.getItem('access_token');
+    if (!token) throw new Error('Utilisateur non authentifié');
 
-      toast({
-        title: "Annonce publiée avec succès !",
-        description: "Votre annonce est maintenant visible par tous les utilisateurs.",
-      });
+    const response = await fetch('http://localhost:8000/api/annonces/', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: form,
+    });
+    
+    if (!response.ok) throw new Error('Erreur lors de la publication');
+    
+    const data = await response.json();
+    toast({ title: "Succès", description: "Annonce publiée avec succès !" });
+    setIsOpen(false);
+    onAnnoncePublished(data);
 
-      setIsOpen(false);
-    } catch (error) {
-      toast({
-        title: "Erreur",
-        description: "Une erreur s'est produite lors de la publication.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    setFormData({
+      titre: '',
+      categorie: '',
+      description: '',
+      location: '',
+      tags: '',
+      auteur: '',
+      contact: '',
+      email: '',
+    });
+    setAttachments([]);
+
+  } catch (error) {
+    console.error(error);
+    toast({
+      title: "Erreur",
+      description: "Échec de la publication",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+
+
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -172,39 +187,41 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="title">Titre de l'annonce *</Label>
+            <Label htmlFor="titre">Titre de l'annonce *</Label>
             <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => handleInputChange('title', e.target.value)}
+              id="titre"
+              value={formData.titre}
+              onChange={(e) => handleInputChange('titre', e.target.value)}
               placeholder="Ex: Recherche investisseur pour projet agricole"
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="category">Catégorie *</Label>
+            <Label htmlFor="categorie">Catégorie *</Label>
             <select
-              id="category"
-              value={formData.category}
-              onChange={(e) => handleInputChange('category', e.target.value)}
+              id="categorie"
+              value={formData.categorie}
+              onChange={(e) => handleInputChange('categorie', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
               required
             >
-              <option value="affaires">Opportunités d'affaires</option>
-              <option value="offres">Offres de services</option>
-              <option value="besoins">Recherche de partenaires</option>
+              <option value="opportunites_affaires">Opportunités d'Affaires</option>
+              <option value="offres_services">Offres de Services</option>
+              <option value="recherche_partenaires">Recherche de Partenaires</option>
+              <option value="conseil_juridique">Conseil Juridique</option>
+              <option value="autre">Autre</option>
             </select>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="author">Votre nom *</Label>
+              <Label htmlFor="auteur">Votre nom *</Label>
               <Input
-                id="author"
-                value={formData.author}
-                onChange={(e) => handleInputChange('author', e.target.value)}
-                placeholder="Ex: Jean Dupont"
+                id="auteur"
+                value={formData.auteur}
+                onChange={(e) => handleInputChange('auteur', e.target.value)}
+                placeholder="Ex: Ousmane Diouf"
                 required
               />
             </div>
@@ -222,11 +239,11 @@ const PublishAnnonceForm = ({ onAnnoncePublished }: PublishAnnonceFormProps) => 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="phone">Téléphone</Label>
+              <Label htmlFor="contact">Téléphone</Label>
               <Input
-                id="phone"
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
+                id="contact"
+                value={formData.contact}
+                onChange={(e) => handleInputChange('contact', e.target.value)}
                 placeholder="Ex: +221 77 123 45 67"
               />
             </div>

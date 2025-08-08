@@ -5,6 +5,10 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Search, User, MapPin, Briefcase, Phone, Mail } from 'lucide-react';
 
+import { useEffect } from 'react';
+import { getExperts} from '@/api';
+
+
 const Profils = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
 
@@ -16,41 +20,47 @@ const Profils = () => {
     { id: 'entrepreneur', name: 'Entrepreneurs' },
   ];
 
-  const mockProfiles = [
-    {
-      id: 1,
-      name: 'Amadou Ba',
-      specialty: 'transitaire',
-      location: 'Dakar, Sénégal',
-      experience: '8 ans d\'expérience',
-      description: 'Spécialiste en transit international et dédouanement pour l\'Afrique de l\'Ouest',
-      services: ['Dédouanement', 'Transport', 'Logistique'],
-      phone: '+221 77 123 45 67',
-      email: 'amadou.ba@transit.sn'
-    },
-    {
-      id: 2,
-      name: 'Mariam Diop',
-      specialty: 'expert',
-      location: 'Abidjan, Côte d\'Ivoire',
-      experience: '12 ans d\'expérience',
-      description: 'Avocate spécialisée en droit des affaires et création d\'entreprises',
-      services: ['Conseil juridique', 'Création d\'entreprise', 'Contrats'],
-      phone: '+225 07 12 34 56',
-      email: 'mariam.diop@juridique.ci'
-    },
-    {
-      id: 3,
-      name: 'Ibrahim Touré',
-      specialty: 'investisseur',
-      location: 'Bamako, Mali',
-      experience: '15 ans d\'expérience',
-      description: 'Investisseur actif dans l\'agriculture et les nouvelles technologies',
-      services: ['Financement', 'Mentorat', 'Réseau'],
-      phone: '+223 70 12 34 56',
-      email: 'ibrahim.toure@invest.ml'
-    }
-  ];
+   const [expert, setExperts] = useState([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+ 
+   useEffect(() => {
+     const fetchExperts = async () => {
+       try {
+         const response = await getExperts();
+         setExperts(response.data);
+       } catch (err) {
+         setError('Impossible de charger les profils experts.');
+         console.error(err);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+   fetchExperts();
+ }, []);
+
+
+  
+  const filteredExperts = selectedSpecialty === 'all' 
+    ? expert 
+    : expert.filter(exp => exp.specialite === selectedSpecialty);
+
+  
+
+ if (loading) {
+  return (
+    <div className="text-center mt-10 text-gray-500">Chargement des experts...</div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="text-center mt-10 text-red-500">{error}</div>
+  );
+}
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
@@ -99,52 +109,61 @@ const Profils = () => {
 
           {/* Profiles grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockProfiles.map((profile) => (
-              <div key={profile.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-primary">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-primary" />
+           {expert.map((expert) => (
+                  <div key={expert.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-primary">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                        <User className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {expert.user?.username || "Nom inconnu"}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {expert.duree_experience} ans d'expérience
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center text-gray-600 text-sm mb-2">
+                      <MapPin className="h-4 w-4 mr-2" />
+                      {expert.localisation}
+                    </div>
+
+                    <p className="text-gray-600 text-sm mb-4">
+                      Spécialité : {expert.specialite}
+                    </p>
+
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Services proposés :</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {expert.services_proposes
+                          ? expert.services_proposes.split(',').map((service, index) => (
+                              <div key={index} className="bg-gray-100 px-2 py-1 rounded text-xs text-gray-700">
+                                {service.trim()}
+                              </div>
+                            ))
+                          : <div>Aucun service proposé</div>}
+                      </div>
+                    </div>
+
+                    <div className="border-t pt-4 space-y-2">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Phone className="h-4 w-4 mr-2" />
+                        {expert.phone || "Numéro non disponible"}
+                      </div>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Mail className="h-4 w-4 mr-2" />
+                        {expert.user?.email || "Email non renseigné"}
+                      </div>
+                    </div>
+
+                    <Button className="w-full mt-4 bg-primary hover:bg-primary/90" size="sm">
+                      Contacter
+                    </Button>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{profile.name}</h3>
-                    <p className="text-sm text-gray-500">{profile.experience}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center text-gray-600 text-sm mb-2">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {profile.location}
-                </div>
-                
-                <p className="text-gray-600 text-sm mb-4">{profile.description}</p>
-                
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-gray-900 mb-2">Services proposés :</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {profile.services.map((service, index) => (
-                      <span key={index} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-                        {service}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="border-t pt-4 space-y-2">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Phone className="h-4 w-4 mr-2" />
-                    {profile.phone}
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Mail className="h-4 w-4 mr-2" />
-                    {profile.email}
-                  </div>
-                </div>
-                
-                <Button className="w-full mt-4 bg-primary hover:bg-primary/90" size="sm">
-                  Contacter
-                </Button>
-              </div>
-            ))}
+                ))}
+
           </div>
         </div>
       </main>

@@ -3,14 +3,19 @@ import { Link } from 'react-router-dom';
 import { Menu, X, User, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from '@/components/auth/AuthModal';
+import UserProfile from '@/pages/AffichProfils';
+
+
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isLoggedIn = !!localStorage.getItem('access_token'); // <-- ajoute après useState
 
   const navigation = [
     { name: 'Accueil', href: '/' },
     { name: 'Annonces', href: '/annonces' },
-    { name: 'Profils', href: '/profils' },
+    { name: 'Experts', href: '/profils' },
     { name: 'Documentation', href: '/documentation' },
     { name: 'Actualités', href: '/actualites' },
   ];
@@ -20,46 +25,56 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center">
-              <div className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold text-xl">
-                IDEAL
-              </div>
-            </Link>
-          </div>
+        <div className="flex-shrink-0">
+          <Link to="/" className="flex items-center">
+            <img
+              src="logo/logo_ideal2.PNG"
+              alt="Logo IDEAL"
+              className="h-[64px] w-auto"
+
+            />
+          </Link>
+        </div>
 
           {/* Navigation Desktop */}
-          <nav className="hidden md:flex space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <nav className="hidden md:flex space-x-4">
+          {navigation.map((item) => (
+            <Link
+              key={item.name}
+              to={item.href}
+              className="bg-orange-500 text-white hover:bg-black px-4 py-2 rounded-md text-sm font-medium transform hover:animate-bounce transition duration-300 ease-in-out"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
 
           {/* Actions Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <AuthModal 
-              trigger={
-                <Button variant="outline" size="sm">
-                  <User className="h-4 w-4 mr-2" />
-                  Connexion
-                </Button>
-              }
-              defaultMode="login"
-            />
-            <AuthModal 
-              trigger={
-                <Button className="bg-primary hover:bg-primary/90" size="sm">
-                  Inscription
-                </Button>
-              }
-              defaultMode="register"
-            />
+            {isLoggedIn ? (
+              <UserProfile />
+            ) : (
+              <>
+                <AuthModal 
+                  trigger={
+                    <Button variant="outline" size="sm">
+                      <User className="h-4 w-4 mr-2" />
+                      Connexion
+                    </Button>
+                  }
+                  defaultMode="login"
+                />
+                <AuthModal 
+                  trigger={
+                    <Button className="bg-primary hover:bg-primary/90" size="sm">
+                      Inscription
+                    </Button>
+                  }
+                  defaultMode="register"
+                />
+              </>
+            )}
             <Button variant="ghost" size="sm">
               <MessageSquare className="h-4 w-4" />
             </Button>
@@ -85,34 +100,42 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="flex flex-col space-y-2">
-              {navigation.map((item) => (
+             {navigation.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-700 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium"
+                  className="bg-orange-500 text-white hover:bg-black px-4 py-2 rounded-md text-sm font-medium transform hover:animate-bounce transition duration-300 ease-in-out"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
+
               <div className="flex flex-col space-y-2 pt-4 border-t">
-                <AuthModal 
-                  trigger={
-                    <Button variant="outline" size="sm" className="w-full">
-                      Connexion
-                    </Button>
-                  }
-                  defaultMode="login"
-                />
-                <AuthModal 
-                  trigger={
-                    <Button className="bg-primary hover:bg-primary/90 w-full" size="sm">
-                      Inscription
-                    </Button>
-                  }
-                  defaultMode="register"
-                />
+                {isLoggedIn ? (
+                  <UserProfile />
+                ) : (
+                  <>
+                    <AuthModal 
+                      trigger={
+                        <Button variant="outline" size="sm" className="w-full">
+                          Connexion
+                        </Button>
+                      }
+                      defaultMode="login"
+                    />
+                    <AuthModal 
+                      trigger={
+                        <Button className="bg-primary hover:bg-primary/90 w-full" size="sm">
+                          Inscription
+                        </Button>
+                      }
+                      defaultMode="register"
+                    />
+                  </>
+                )}
               </div>
+
             </div>
           </div>
         )}

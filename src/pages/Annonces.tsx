@@ -7,60 +7,72 @@ import { Button } from '@/components/ui/button';
 import { Search, Filter } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import { useEffect } from 'react';
+import { getAnnonces } from '@/api';
+
+
+  
 const Annonces = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const navigate = useNavigate();
 
   const categories = [
     { id: 'all', name: 'Toutes les annonces' },
-    { id: 'affaires', name: 'Opportunités d\'affaires' },
-    { id: 'offres', name: 'Offres de services' },
-    { id: 'besoins', name: 'Recherche de partenaires' },
+    { id: 'opportunites_affaires', name: 'Opportunités d\'affaires' },
+    { id: 'offres_services', name: 'Offres de services' },
+    { id: 'recherche_partenaires', name: 'Recherche de partenaires' },
+    { id: 'conseil_juridique', name: 'Conseil Juridique' },
+    { id: 'autre', name: 'Autre' },
   ];
 
-  const initialAnnonces = [
-    {
-      id: 1,
-      title: 'Recherche investisseur pour projet agricole',
-      category: 'affaires',
-      author: 'Mamadou Diallo',
-      location: 'Dakar, Sénégal',
-      date: '2024-01-15',
-      description: 'Projet d\'agriculture moderne nécessitant un investissement de 50M FCFA...',
-      tags: ['Agriculture', 'Investissement', 'Dakar']
-    },
-    {
-      id: 2,
-      title: 'Services de transit et dédouanement',
-      category: 'offres',
-      author: 'SARL TransAfrica',
-      location: 'Abidjan, Côte d\'Ivoire',
-      date: '2024-01-14',
-      description: 'Société spécialisée dans le transit et dédouanement pour toute l\'Afrique de l\'Ouest...',
-      tags: ['Transit', 'Douane', 'Logistique']
-    },
-    {
-      id: 3,
-      title: 'Partenariat commercial textile',
-      category: 'besoins',
-      author: 'Fatou Sow',
-      location: 'Bamako, Mali',
-      date: '2024-01-13',
-      description: 'Recherche partenaire pour développement gamme textile africaine...',
-      tags: ['Textile', 'Partenariat', 'Mode']
-    }
-  ];
+  
+  const [annonces, setAnnonces] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [annonces, setAnnonces] = useState(initialAnnonces);
+  useEffect(() => {
+    const fetchAnnonces = async () => {
+      try {
+        const response = await getAnnonces();
+        setAnnonces(response.data);
+      } catch (err) {
+        setError('Impossible de charger les annonces.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  fetchAnnonces();
+}, []);
+
+
+
 
   const handleAnnoncePublished = (newAnnonce: any) => {
     setAnnonces(prev => [newAnnonce, ...prev]);
   };
 
   const filteredAnnonces = selectedCategory === 'all' 
-    ? annonces 
-    : annonces.filter(annonce => annonce.category === selectedCategory);
+  ? annonces 
+  : annonces.filter(annonce => annonce.categorie === selectedCategory);
 
+
+if (loading) {
+  return (
+    <div className="text-center mt-10 text-gray-500">Chargement des annonces...</div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="text-center mt-10 text-red-500">{error}</div>
+  );
+}
+
+
+
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white">
       <Header />
@@ -93,17 +105,17 @@ const Annonces = () => {
 
           {/* Categories */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {categories.map((category) => (
+            {categories.map((categorie) => (
               <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
+                key={categorie.id}
+                onClick={() => setSelectedCategory(categorie.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  selectedCategory === category.id
+                  selectedCategory === categorie.id
                     ? 'bg-primary text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-primary/10'
                 }`}
               >
-                {category.name}
+                {categorie.name}
               </button>
             ))}
           </div>
@@ -113,28 +125,32 @@ const Annonces = () => {
             {filteredAnnonces.map((annonce) => (
               <div key={annonce.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border-l-4 border-primary">
                 <div className="flex justify-between items-start mb-4">
-                  <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
-                    {categories.find(c => c.id === annonce.category)?.name}
+                    <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                    {annonce.categorie}
                   </span>
-                  <span className="text-xs text-gray-500">{annonce.date}</span>
+
+                  <span className="text-xs text-gray-500">{annonce.date_publication}</span>
                 </div>
                 
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{annonce.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{annonce.titre}</h3>
                 <p className="text-gray-600 text-sm mb-4 line-clamp-3">{annonce.description}</p>
                 
                 <div className="flex justify-between items-center mb-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{annonce.author}</p>
-                    <p className="text-xs text-gray-500">{annonce.location}</p>
+                    <p className="text-sm text-gray-600 font-medium">
+                      {annonce.auteur.replace(/^Apporteur:\s*/, '')}
+                    </p>
+
+                    <p className="text-xs text-gray-500">{annonce.lieu}</p>
                   </div>
                 </div>
                 
                 <div className="flex flex-wrap gap-1 mb-4">
-                  {annonce.tags.map((tag, index) => (
-                    <span key={index} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-                      {tag}
-                    </span>
-                  ))}
+                  {(annonce.tags || []).map((tag, index) => (
+                  <span key={index} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
+                    {tag}
+                  </span>
+                ))}
                 </div>
                 
                 <Button 

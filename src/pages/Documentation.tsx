@@ -5,53 +5,72 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, FileText, Building2, Truck, Scale, HelpCircle } from 'lucide-react';
 
+
+import {useEffect, useState} from 'react';
+import {getDocumentations} from '@/api';
+
+const iconMap = {
+  Commerciale: Building2,
+  Formation: FileText,
+  Transport: Truck,
+  Justice: Scale,
+  Aide: HelpCircle,
+};
+
+
 const Documentation = () => {
-  const resources = [
-    {
-      id: 1,
-      title: 'Chambres de Commerce',
-      icon: Building2,
-      description: 'Informations et services des chambres de commerce régionales',
-      links: [
-        { name: 'Chambre de Commerce de Dakar', url: '#' },
-        { name: 'Chambre de Commerce d\'Abidjan', url: '#' },
-        { name: 'Chambre de Commerce de Bamako', url: '#' },
-      ]
-    },
-    {
-      id: 2,
-      title: 'APIX - Agence de promotion des investissements',
-      icon: FileText,
-      description: 'Services et procédures pour la promotion des investissements au Sénégal',
-      links: [
-        { name: 'Création d\'entreprise', url: '#' },
-        { name: 'Guichet unique', url: '#' },
-        { name: 'Zones franches', url: '#' },
-      ]
-    },
-    {
-      id: 3,
-      title: 'Services Douaniers',
-      icon: Truck,
-      description: 'Procédures douanières et réglementations d\'importation/exportation',
-      links: [
-        { name: 'Tarifs douaniers CEDEAO', url: '#' },
-        { name: 'Procédures de dédouanement', url: '#' },
-        { name: 'Régimes douaniers spéciaux', url: '#' },
-      ]
-    },
-    {
-      id: 4,
-      title: 'Transitaires et Logistique',
-      icon: Truck,
-      description: 'Annuaire des transitaires agréés et services logistiques',
-      links: [
-        { name: 'Liste des transitaires agréés', url: '#' },
-        { name: 'Tarifs de référence', url: '#' },
-        { name: 'Assurances transport', url: '#' },
-      ]
-    }
-  ];
+
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  
+        const categories = [
+            { id: 'all', name: 'Toutes les documentations' },
+            { id: 'commerciale', name: "Commerciale" },
+            { id: 'juridique', name: 'Juridique' }, 
+            { id: 'technique', name: 'Technique' },
+            { id: 'autre', name: 'Autre' }, 
+      ];
+
+
+    const [resources, setDocumentations] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+  
+    useEffect(() => {
+      const fetchDocumentations = async () => {
+        try {
+          const response = await getDocumentations();
+          console.log(response.data);
+          setDocumentations(response.data);
+        } catch (err) {
+          setError('Impossible de charger les documentations.');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+    fetchDocumentations();
+  }, []);
+
+
+  const filteredRessources = selectedCategory === 'all'
+  ? resources
+  : resources.filter(resources => resources.categorie === selectedCategory);
+
+if (loading) {
+  return (
+    <div className="text-center mt-10 text-gray-500">Chargement des documentations...</div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="text-center mt-10 text-red-500">{error}</div>
+  );
+}
+
+
 
   const faqs = [
     {
@@ -81,64 +100,61 @@ const Documentation = () => {
             </p>
           </div>
 
+          <div className="flex flex-wrap gap-2 mb-8">
+            {categories.map((categorie) => (
+              <button
+                key={categorie.id}
+                onClick={() => setSelectedCategory(categorie.id)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === categorie.id
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-primary/10'
+                }`}
+              >
+                {categorie.name}
+              </button>
+            ))}
+          </div>
+
+
           {/* Resources section */}
+         
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Ressources Officielles</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {resources.map((resource) => {
-                const IconComponent = resource.icon;
+              {filteredRessources.map((resource) => {
+                const IconComponent = iconMap[resource.categorie] || FileText;
                 return (
-                  <div key={resource.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
-                        <IconComponent className="h-6 w-6 text-primary" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900">{resource.title}</h3>
+                  <div key={resource.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary relative">
+                  
+                  <span className="absolute top-4 right-4 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full capitalize">
+                    {resource.categorie}
+                  </span>
+
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                      <IconComponent className="h-6 w-6 text-primary" />
                     </div>
-                    
-                    <p className="text-gray-600 text-sm mb-4">{resource.description}</p>
-                    
-                    <div className="space-y-2">
-                      {resource.links.map((link, index) => (
-                        <a
-                          key={index}
-                          href={link.url}
-                          className="flex items-center text-primary hover:text-primary/80 text-sm transition-colors"
-                        >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          {link.name}
-                        </a>
-                      ))}
-                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">{resource.titre}</h3>
                   </div>
+
+                  <p className="text-gray-600 text-sm mb-4">{resource.contenu}</p>
+
+                  {resource.lien && (
+                    <a
+                      href={resource.lien}
+                      className="flex items-center text-primary hover:text-primary/80 text-sm transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      {resource.lien}
+                    </a>
+                  )}
+                </div>
+
                 );
               })}
-            </div>
-          </div>
-
-          {/* Downloadable forms section */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Formulaires Téléchargeables</h2>
-            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-primary">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  'Demande de création d\'entreprise',
-                  'Déclaration d\'importation',
-                  'Demande d\'agrément transitaire',
-                  'Formulaire de domiciliation',
-                  'Déclaration en douane',
-                  'Demande de licence d\'exportation'
-                ].map((form, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    className="justify-start h-auto p-4 text-left border-primary/20 hover:bg-primary/10"
-                  >
-                    <FileText className="h-5 w-5 mr-3 text-primary" />
-                    <span className="text-sm">{form}</span>
-                  </Button>
-                ))}
-              </div>
             </div>
           </div>
 

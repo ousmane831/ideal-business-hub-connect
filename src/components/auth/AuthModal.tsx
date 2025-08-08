@@ -6,6 +6,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 type AuthMode = 'login' | 'register' | 'forgot-password';
 type UserType = 'apporteur' | 'chercheur' | 'expert';
@@ -18,15 +21,28 @@ interface AuthModalProps {
 const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' }) => {
   const [mode, setMode] = useState<AuthMode>(defaultMode);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
     firstName: '',
     lastName: '',
     userType: '' as UserType | '',
-    phone: ''
+    phone: '',
+    role: '',
+    first_name: '',
+    last_name: '',
+    adresse: '',
+    telephone: '',
+    duree_experience: '',
+    specialite: '',
+    localisation: '',
+    services_proposes: ''
   });
+
+  
 
   const userTypes = [
     { value: 'apporteur', label: 'Apporteur d\'affaire' },
@@ -34,11 +50,69 @@ const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' })
     { value: 'expert', label: 'Expert' }
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', { mode, formData });
-    // Ici vous ajouterez la logique d'authentification
-  };
+  
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (mode === 'login') {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+        username: formData.username,
+        password: formData.password,
+      });
+
+      const { access, refresh } = response.data;
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+      alert("Connexion réussie !");
+      navigate('/accueil');
+    } catch (error) {
+      console.error("Erreur lors de la connexion :", error);
+      alert("Nom d'utilisateur ou mot de passe incorrect");
+    }
+  } if (mode === 'register') {
+    if (formData.password !== formData.confirmPassword) {
+      alert("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
+    try {
+      const payload = {
+      role: formData.role,  
+      user: {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        adresse: formData.adresse,
+        telephone: formData.telephone
+      },
+        duree_experience: formData.duree_experience || '',
+        specialite: formData.specialite || '',
+        localisation: formData.localisation || '',
+        services_proposes: formData.services_proposes || '',
+      };
+      const response = await axios.post('http://127.0.0.1:8000/api/signup/', payload);
+
+      alert("Inscription réussie, vous pouvez maintenant vous connecter !");
+      setMode('login');
+      // éventuellement réinitialiser le formData ou fermer le modal
+    } catch (error: any) {
+      console.error("Erreur lors de l'inscription :", error.response || error);
+      alert(error.response?.data?.message || "Erreur lors de l'inscription.");
+    }
+  }
+
+  if (mode === 'forgot-password') {
+    // à implémenter
+  }
+};
+
+
+
+
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -55,20 +129,21 @@ const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' })
       <CardContent className="space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="votre@email.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
+          <Label htmlFor="username">Nom d'utilisateur</Label>
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              id="username"
+              type="text"
+              placeholder="Votre nom d'utilisateur"
+              value={formData.username}
+              onChange={(e) => handleInputChange('username', e.target.value)}
+              className="pl-10"
+              required
+            />
           </div>
+        </div>
+
           
           <div className="space-y-2">
             <Label htmlFor="password">Mot de passe</Label>
@@ -135,30 +210,41 @@ const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' })
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <Label htmlFor="firstName">Prénom</Label>
+              <Label htmlFor="first_name">Prénom</Label>
               <Input
-                id="firstName"
-                placeholder="Jean"
-                value={formData.firstName}
-                onChange={(e) => handleInputChange('firstName', e.target.value)}
+                id="first_name"
+                placeholder="Ousmane"
+                value={formData.first_name}
+                onChange={(e) => handleInputChange('first_name', e.target.value)}
                 required
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="lastName">Nom</Label>
+              <Label htmlFor="last_name">Nom</Label>
               <Input
-                id="lastName"
-                placeholder="Dupont"
-                value={formData.lastName}
-                onChange={(e) => handleInputChange('lastName', e.target.value)}
+                id="last_name"
+                placeholder="Diouf"
+                value={formData.last_name}
+                onChange={(e) => handleInputChange('last_name', e.target.value)}
                 required
               />
             </div>
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="userType">Type de profil</Label>
-            <Select value={formData.userType} onValueChange={(value) => handleInputChange('userType', value)}>
+              <Label htmlFor="last_name">Nom d'utilisateur</Label>
+              <Input
+                id="username"
+                placeholder="ouz"
+                value={formData.username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                required
+              />
+            </div>
+
+          <div className="space-y-1">
+            <Label htmlFor="role">Type de profil</Label>
+            <Select value={formData.role} onValueChange={(value) => handleInputChange('role', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Sélectionnez votre profil" />
               </SelectTrigger>
@@ -185,13 +271,13 @@ const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' })
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="phone">Téléphone</Label>
+              <Label htmlFor="telephone">Téléphone</Label>
               <Input
-                id="phone"
+                id="telephone"
                 type="tel"
                 placeholder="06 12 34 56 78"
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
+                value={formData.telephone}
+                onChange={(e) => handleInputChange('telephone', e.target.value)}
                 required
               />
             </div>

@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, BookOpen, User, Newspaper, X, Star, Trophy, Target, Zap } from 'lucide-react';
-
+import { getPublicites } from '@/api';
 const ModernHeroSection = () => {
   const navigate = useNavigate();
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
@@ -10,18 +10,12 @@ const ModernHeroSection = () => {
 
   // Images facilement modifiables - remplacez les URLs pour changer les images (images très claires)
   const cardImages = {
-    annonces: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    documentation: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    profils: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    actualites: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  };
+    annonces: '/images/annonces.jpg',
+    documentation: '/images/documentation.webp',
+    profils: '/images/experts.jpg',
+    actualites: '/images/actualites.jpg'
+};
 
-  // Images pour les publicités - images claires et nettes
-  const adImages = {
-    formation: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    coaching: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    strategie: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-  };
 
   const features = [
     {
@@ -46,7 +40,7 @@ const ModernHeroSection = () => {
     },
     {
       id: 3,
-      title: 'Profils',
+      title: 'Experts',
       description: 'Explorez les profils d\'entrepreneurs et d\'experts dans votre domaine',
       icon: User,
       color: 'from-pink-400 to-pink-600',
@@ -56,7 +50,7 @@ const ModernHeroSection = () => {
     },
     {
       id: 4,
-      title: 'Actualités',
+      title: 'Événements',
       description: 'Restez informé des dernières nouvelles et tendances du monde des affaires',
       icon: Newspaper,
       color: 'from-indigo-400 to-indigo-600',
@@ -65,47 +59,56 @@ const ModernHeroSection = () => {
       image: cardImages.actualites
     }
   ];
+      interface Publicite {
+        id: number;
+        titre: string;
+        description: string;
+        contenu: string;
+        contact: string;
+        image: string;
+        badge: string;
+        icon: React.ComponentType<any>;
+        color: string;
+        lien: string;
+      }
 
-  // Publicités section - seulement 3 cards
-  const ads = [
-    {
-      id: 1,
-      title: 'Formation Expert',
-      description: 'Devenez expert en 30 jours',
-      fullDescription: 'Programme complet de formation pour devenir expert reconnu dans votre domaine. Accès à vie aux contenus, certificat officiel et accompagnement personnalisé.',
-      icon: Star,
-      color: 'from-yellow-400 to-orange-500',
-      badge: 'PROMO -50%',
-      price: '299€ au lieu de 599€',
-      image: adImages.formation
-    },
-    {
-      id: 2,
-      title: 'Coaching Pro',
-      description: 'Accompagnement personnalisé',
-      fullDescription: 'Coaching individuel avec un expert business pour développer votre stratégie et atteindre vos objectifs plus rapidement.',
-      icon: Trophy,
-      color: 'from-green-400 to-emerald-500',
-      badge: 'NOUVEAU',
-      price: 'À partir de 150€/h',
-      image: adImages.coaching
-    },
-    {
-      id: 3,
-      title: 'Stratégie Business',
-      description: 'Plan sur mesure pour votre entreprise',
-      fullDescription: 'Analyse complète de votre business et création d\'un plan stratégique personnalisé pour maximiser votre croissance.',
-      icon: Target,
-      color: 'from-red-400 to-pink-500',
-      badge: 'POPULAIRE',
-      price: '499€',
-      image: adImages.strategie
-    }
-  ];
+    const [publicites, setPublicites] = useState<Publicite[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      const fetchPublicites = async () => {
+        try {
+          const response = await getPublicites();
+          setPublicites(response.data);
+        } catch (err) {
+          setError('Impossible de charger les publicites.');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+    fetchPublicites();
+  }, []);
+  
+  
+if (loading) {
+  return (
+    <div className="text-center mt-10 text-gray-500">Chargement des Publicte...</div>
+  );
+}
+
+if (error) {
+  return (
+    <div className="text-center mt-10 text-red-500">{error}</div>
+  );
+}
+
 
   // Duplicate features and ads for infinite scroll
   const duplicatedFeatures = [...features, ...features];
-  const duplicatedAds = [...ads, ...ads];
+  const duplicatedAds = [...publicites, ...publicites];
 
   const handleCardClick = (feature: typeof features[0]) => {
     if (expandedCard === feature.id) {
@@ -120,8 +123,9 @@ const ModernHeroSection = () => {
     setExpandedCard(null);
   };
 
+  
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black py-6 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
+    <section className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 py-6 px-4 sm:px-6 lg:px-8 overflow-hidden relative">
       {/* Animated background */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
@@ -131,13 +135,15 @@ const ModernHeroSection = () => {
 
       {/* Header - Reduced size */}
       <div className="max-w-7xl mx-auto text-center mb-8 relative z-10">
-        <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
-          <span className="text-orange-400">IDEAL</span> Platform
-        </h1>
-        <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-          Votre passerelle vers le succès entrepreneurial
-        </p>
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
+              <span className="text-orange-500">IDEAL</span>{' '}
+              <span className="text-black">Platform</span>
+            </h1>
+            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+              Votre passerelle vers le succès entrepreneurial
+            </p>
       </div>
+
 
       {/* Main Features - Reduced size and spacing */}
       <div className="max-w-7xl mx-auto mb-6 relative z-10">
@@ -146,7 +152,7 @@ const ModernHeroSection = () => {
             {duplicatedFeatures.map((feature, index) => {
               const IconComponent = feature.icon;
               const isExpanded = expandedCard === feature.id;
-              
+             
               return (
                 <div
                   key={`${feature.id}-${index}`}
@@ -174,16 +180,16 @@ const ModernHeroSection = () => {
                     {/* Animated border glow */}
                     <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 hover:opacity-100 transition-opacity duration-500 blur-sm -z-10"></div>
                     
-                    {/* Background Image sans overlay de couleur */}
+                    {/* Background Image avec overlay orange transparent */}
                     <div
                       className="absolute inset-0 bg-cover bg-center rounded-3xl"
                       style={{ backgroundImage: `url(${feature.image})` }}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40 rounded-3xl" />
+                      <div className="absolute inset-0 bg-black/30 rounded-3xl" />
                     </div>
 
                     {/* Glass effect overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm rounded-3xl"></div>
+                    {/* <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-sm rounded-3xl"></div> */}
 
                     {/* Content */}
                     <div className="relative h-full flex flex-col justify-between p-5 text-white z-10">
@@ -218,7 +224,7 @@ const ModernHeroSection = () => {
                                 e.stopPropagation();
                                 navigate(feature.route);
                               }}
-                              className="bg-white/20 backdrop-blur-sm text-white border border-white/30 px-5 py-2 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl text-xs"
+                              className="bg-orange-500 backdrop-blur-sm text-white border border-white/30 px-5 py-2 rounded-xl font-semibold hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-xl text-xs"
                             >
                               Découvrir →
                             </button>
@@ -243,14 +249,13 @@ const ModernHeroSection = () => {
       <div className="max-w-7xl mx-auto mb-8 relative z-10">
         <div className="relative overflow-hidden">
           <div className="flex animate-scroll-left space-x-6">
-            {duplicatedAds.map((ad, index) => {
-            const IconComponent = ad.icon;
+            {duplicatedAds.map((publicites, index) => {
             
               return (
                 <div
-                  key={`${ad.id}-${index}`}
+                  key={`${publicites.id}-${index}`}
                   className="relative overflow-hidden cursor-pointer flex-shrink-0 w-64 h-40 hover:scale-105 transition-all duration-200"
-                  onClick={() => setSelectedAd(ad.id)}
+                  onClick={() => setSelectedAd(publicites.id)}
                 >
                   {/* Ad Card Container */}
                   <div className="relative h-full rounded-2xl bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-lg border border-white/20 shadow-xl overflow-hidden group">
@@ -260,24 +265,24 @@ const ModernHeroSection = () => {
                     {/* Background Image */}
                     <div
                       className="absolute inset-0 bg-cover bg-center rounded-2xl"
-                      style={{ backgroundImage: `url(${ad.image})` }}
+                      style={{ backgroundImage: `url(${publicites.image})` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40 rounded-2xl" />
                     </div>
 
                   {/* Badge */}
                   <div className="absolute top-2 right-2 bg-white/90 text-black text-xs font-bold px-2 py-1 rounded-full backdrop-blur-sm">
-                    {ad.badge}
+                    {publicites.badge}
                   </div>
 
                   {/* Content */}
                   <div className="relative h-full flex flex-col justify-center items-center p-4 text-white z-10 text-center">
                     <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 shadow-lg mb-2">
-                      <IconComponent className="h-6 w-6 text-white" />
+                      
                     </div>
-                    <h4 className="text-sm font-bold text-white drop-shadow-lg mb-1">{ad.title}</h4>
-                    <p className="text-xs text-white/80 drop-shadow-md leading-tight mb-2">{ad.description}</p>
-                    <p className="text-xs text-white font-semibold">{ad.price}</p>
+                    <h4 className="text-sm font-bold text-white drop-shadow-lg mb-1">{publicites.titre}</h4>
+                    <p className="text-xs text-white/80 drop-shadow-md leading-tight mb-2">{publicites.description}</p>
+                    <p className="text-xs text-white font-semibold">{publicites.contact}</p>
                   </div>
 
                   {/* Hover effect */}
@@ -293,19 +298,19 @@ const ModernHeroSection = () => {
       </div>
 
       {/* Modal pour les détails de la publicité */}
+
+      
       {selectedAd && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 max-w-md w-full shadow-2xl">
             {(() => {
-              const ad = ads.find(a => a.id === selectedAd);
+              const ad = publicites.find(a => a.id === selectedAd);
               if (!ad) return null;
-              const IconComponent = ad.icon;
-              
               return (
                 <>
                   <div className="flex justify-between items-start mb-6">
                     <div className={`p-3 bg-gradient-to-br ${ad.color} rounded-2xl shadow-xl`}>
-                      <IconComponent className="h-8 w-8 text-white" />
+                     
                     </div>
                     <button
                       onClick={() => setSelectedAd(null)}
@@ -317,17 +322,24 @@ const ModernHeroSection = () => {
                   
                   <div className="text-white">
                     <div className="flex items-center gap-2 mb-4">
-                      <h3 className="text-xl font-bold">{ad.title}</h3>
+                      <h3 className="text-xl font-bold">{ad.titre}</h3>
                       <span className="px-2 py-1 bg-white/20 text-xs font-bold rounded-full">{ad.badge}</span>
                     </div>
                     
-                    <p className="text-white/80 mb-4 leading-relaxed">{ad.fullDescription}</p>
+                    <p className="text-white/80 mb-4 leading-relaxed">{ad.contenu}</p>
                     
                     <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-orange-400">{ad.price}</span>
+                      <span className="text-lg font-bold text-orange-400">{ad.contact}</span>
+                      <a
+                      href={ad.lien}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <button className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-orange-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-xl">
-                        Commander
+                        Plus d'infos
                       </button>
+                    </a>
+
                     </div>
                   </div>
                 </>
@@ -342,15 +354,15 @@ const ModernHeroSection = () => {
         <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl">
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl"></div>
           <div className="relative">
-            <h2 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-orange-400 to-pink-500 bg-clip-text text-transparent">
+            <h2 className="text-2xl font-bold text-black mb-3">
               Prêt à transformer votre business ?
             </h2>
-            <p className="text-lg text-gray-300 mb-6">
+            <p className="text-lg text-black mb-6">
               Rejoignez des milliers d'entrepreneurs qui font confiance à IDEAL Platform
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <button
-                onClick={() => navigate('/profils')}
+                onClick={() => navigate('/annonces')}
                 className="bg-gradient-to-r from-orange-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-xl border border-white/20 backdrop-blur-sm"
               >
                 Commencer maintenant
@@ -410,8 +422,12 @@ const ModernHeroSection = () => {
         }
         `}
       </style>
+      
+     
     </section>
+    
   );
+  
 };
 
 export default ModernHeroSection;

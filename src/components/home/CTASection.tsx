@@ -12,7 +12,7 @@ const CTASection = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
           Prêt à développer votre réseau business ?
         </h2>
-        <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
+        <p className="text-xl text-black mb-8 max-w-2xl mx-auto">
           Rejoignez dès maintenant la communauté IDEAL et accédez à toutes les opportunités d'affaires
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
