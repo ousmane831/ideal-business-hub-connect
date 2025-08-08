@@ -13,7 +13,8 @@ import Actualites from "./pages/Actualites";
 import NotFound from "./pages/NotFound";
 
 import AdminLogin from "./pages/AdminLogin";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/Dashboard";
+
 
 
 
