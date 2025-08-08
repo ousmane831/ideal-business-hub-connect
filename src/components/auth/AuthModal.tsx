@@ -66,6 +66,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);
       alert("Connexion réussie !");
+
       navigate('/accueil');
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
@@ -96,6 +97,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       };
       const response = await axios.post('http://127.0.0.1:8000/api/signup/', payload);
 
+      console.log("Saving in localStorage:", formData.first_name, formData.last_name);
+      localStorage.setItem('firstName', formData.first_name);
+      localStorage.setItem('lastName', formData.last_name);
+
+     
       alert("Inscription réussie, vous pouvez maintenant vous connecter !");
       setMode('login');
       // éventuellement réinitialiser le formData ou fermer le modal
