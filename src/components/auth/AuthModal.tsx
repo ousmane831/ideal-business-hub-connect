@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
 
 type AuthMode = 'login' | 'register' | 'forgot-password';
 type UserType = 'apporteur' | 'chercheur' | 'expert';
@@ -18,20 +35,20 @@ interface AuthModalProps {
   defaultMode?: AuthMode;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' }) => {
+const AuthModal: React.FC<AuthModalProps> = ({
+  trigger,
+  defaultMode = 'login',
+}) => {
   const [mode, setMode] = useState<AuthMode>(defaultMode);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
-    firstName: '',
-    lastName: '',
-    userType: '' as UserType | '',
-    phone: '',
-    role: '',
+    role: '' as UserType | '',
     first_name: '',
     last_name: '',
     adresse: '',
@@ -39,20 +56,20 @@ const AuthModal: React.FC<AuthModalProps> = ({ trigger, defaultMode = 'login' })
     duree_experience: '',
     specialite: '',
     localisation: '',
-    services_proposes: ''
+    services_proposes: '',
   });
 
-  
-
   const userTypes = [
-    { value: 'apporteur', label: 'Apporteur d\'affaire' },
-    { value: 'chercheur', label: 'Chercheur d\'affaire' },
-    { value: 'expert', label: 'Expert' }
+    { value: 'apporteur', label: "Apporteur d'affaire" },
+    { value: 'chercheur', label: "Chercheur d'affaire" },
+    { value: 'expert', label: 'Expert' },
   ];
 
-  
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-const handleSubmit = async (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   if (mode === 'login') {
@@ -62,67 +79,81 @@ const handleSubmit = async (e: React.FormEvent) => {
         password: formData.password,
       });
 
-      const { access, refresh } = response.data;
+      const {
+        access,
+        refresh,
+        username,
+        first_name,
+        last_name,
+        email,
+        role
+      } = response.data;
+
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);
-      alert("Connexion réussie !");
+      localStorage.setItem('username', username);
+      localStorage.setItem('first_name', first_name);
+      localStorage.setItem('last_name', last_name);
+      localStorage.setItem('email', email);
+      localStorage.setItem('role', role);
+
+      alert('Connexion réussie !');
 
       navigate('/accueil');
     } catch (error) {
-      console.error("Erreur lors de la connexion :", error);
+      console.error('Erreur lors de la connexion :', error);
       alert("Nom d'utilisateur ou mot de passe incorrect");
     }
-  } if (mode === 'register') {
+  }
+
+  if (mode === 'register') {
     if (formData.password !== formData.confirmPassword) {
-      alert("Les mots de passe ne correspondent pas.");
+      alert('Les mots de passe ne correspondent pas.');
       return;
     }
 
     try {
-      const payload = {
-      role: formData.role,  
-      user: {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        adresse: formData.adresse,
-        telephone: formData.telephone
-      },
-        duree_experience: formData.duree_experience || '',
-        specialite: formData.specialite || '',
-        localisation: formData.localisation || '',
-        services_proposes: formData.services_proposes || '',
+      // Préparer le payload avec uniquement les champs utiles selon le rôle
+      const payload: any = {
+        role: formData.role,
+        user: {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          adresse: formData.adresse,
+          telephone: formData.telephone,
+        },
       };
-      const response = await axios.post('http://127.0.0.1:8000/api/signup/', payload);
 
-      console.log("Saving in localStorage:", formData.first_name, formData.last_name);
-      localStorage.setItem('firstName', formData.first_name);
-      localStorage.setItem('lastName', formData.last_name);
+      if (formData.role === 'expert') {
+        payload.duree_experience = formData.duree_experience;
+        payload.specialite = formData.specialite;
+        payload.localisation = formData.localisation;
+        payload.services_proposes = formData.services_proposes;
+      }
 
-     
-      alert("Inscription réussie, vous pouvez maintenant vous connecter !");
+      // Tu peux aussi ajouter des conditions pour 'chercheur' ou 'apporteur' si nécessaire
+
+      await axios.post('http://127.0.0.1:8000/api/signup/', payload);
+
+      alert(
+        "Inscription réussie, vous pouvez maintenant vous connecter !"
+      );
       setMode('login');
-      // éventuellement réinitialiser le formData ou fermer le modal
     } catch (error: any) {
-      console.error("Erreur lors de l'inscription :", error.response || error);
+      console.error('Erreur lors de l\'inscription :', error.response || error);
       alert(error.response?.data?.message || "Erreur lors de l'inscription.");
     }
   }
 
   if (mode === 'forgot-password') {
-    // à implémenter
+    // À implémenter selon ton backend
+    alert('Fonctionnalité non encore implémentée.');
   }
 };
 
-
-
-
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   const renderLoginForm = () => (
     <Card>
@@ -135,22 +166,21 @@ const handleSubmit = async (e: React.FormEvent) => {
       <CardContent className="space-y-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-          <Label htmlFor="username">Nom d'utilisateur</Label>
-          <div className="relative">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              id="username"
-              type="text"
-              placeholder="Votre nom d'utilisateur"
-              value={formData.username}
-              onChange={(e) => handleInputChange('username', e.target.value)}
-              className="pl-10"
-              required
-            />
+            <Label htmlFor="username">Nom d'utilisateur</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                id="username"
+                type="text"
+                placeholder="Votre nom d'utilisateur"
+                value={formData.username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                className="pl-10"
+                required
+              />
+            </div>
           </div>
-        </div>
 
-          
           <div className="space-y-2">
             <Label htmlFor="password">Mot de passe</Label>
             <div className="relative">
@@ -171,7 +201,11 @@ const handleSubmit = async (e: React.FormEvent) => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
@@ -238,19 +272,23 @@ const handleSubmit = async (e: React.FormEvent) => {
           </div>
 
           <div className="space-y-1">
-              <Label htmlFor="last_name">Nom d'utilisateur</Label>
-              <Input
-                id="username"
-                placeholder="ouz"
-                value={formData.username}
-                onChange={(e) => handleInputChange('username', e.target.value)}
-                required
-              />
-            </div>
+            <Label htmlFor="username">Nom d'utilisateur</Label>
+            <Input
+              id="username"
+              placeholder="ouz"
+              value={formData.username}
+              onChange={(e) => handleInputChange('username', e.target.value)}
+              required
+            />
+          </div>
 
           <div className="space-y-1">
             <Label htmlFor="role">Type de profil</Label>
-            <Select value={formData.role} onValueChange={(value) => handleInputChange('role', value)}>
+            <Select
+              value={formData.role}
+              onValueChange={(value) => handleInputChange('role', value)}
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Sélectionnez votre profil" />
               </SelectTrigger>
@@ -281,13 +319,82 @@ const handleSubmit = async (e: React.FormEvent) => {
               <Input
                 id="telephone"
                 type="tel"
-                placeholder="06 12 34 56 78"
+                placeholder="78 332 69 70"
                 value={formData.telephone}
                 onChange={(e) => handleInputChange('telephone', e.target.value)}
                 required
               />
             </div>
           </div>
+
+          {/* Champs conditionnels selon le rôle */}
+
+          {formData.role === 'expert' && (
+            <>
+              <div className="space-y-1">
+                <Label htmlFor="duree_experience">Durée d'expérience</Label>
+                <Input
+                  id="duree_experience"
+                  placeholder="Ex: 5 ans"
+                  value={formData.duree_experience}
+                  onChange={(e) =>
+                    handleInputChange('duree_experience', e.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="specialite">Spécialité</Label>
+                <Input
+                  id="specialite"
+                  placeholder="Ex: BTP, Informatique..."
+                  value={formData.specialite}
+                  onChange={(e) =>
+                    handleInputChange('specialite', e.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="localisation">Localisation</Label>
+                <Input
+                  id="localisation"
+                  placeholder="Ville / Région"
+                  value={formData.localisation}
+                  onChange={(e) =>
+                    handleInputChange('localisation', e.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-1">
+              <Label htmlFor="services_proposes">Services proposés</Label>
+              <Select
+                value={formData.services_proposes}
+                onValueChange={(value) => handleInputChange('services_proposes', value)}
+                required
+              >
+                <SelectTrigger id="services_proposes">
+                  <SelectValue placeholder="Sélectionnez un service" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="dedouanement">Dédouanement</SelectItem>
+                  <SelectItem value="transport">Transport</SelectItem>
+                  <SelectItem value="logistique">Logistique</SelectItem>
+                  <SelectItem value="conseil_juridique">Conseil Juridique</SelectItem>
+                  <SelectItem value="contrats">Contrats</SelectItem>
+                  <SelectItem value="financement">Financement</SelectItem>
+                  <SelectItem value="autre">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            </>
+          )}
+
+          {/* Tu peux ici ajouter d’autres champs conditionnels pour chercheur ou apporteur si besoin */}
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
@@ -309,7 +416,11 @@ const handleSubmit = async (e: React.FormEvent) => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
                 >
-                  {showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                  {showPassword ? (
+                    <EyeOff className="h-3 w-3" />
+                  ) : (
+                    <Eye className="h-3 w-3" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -320,13 +431,18 @@ const handleSubmit = async (e: React.FormEvent) => {
                 type="password"
                 placeholder="••••••••"
                 value={formData.confirmPassword}
-                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange('confirmPassword', e.target.value)
+                }
                 required
               />
             </div>
           </div>
 
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 mt-4">
+          <Button
+            type="submit"
+            className="w-full bg-primary hover:bg-primary/90 mt-4"
+          >
             Créer mon compte
           </Button>
         </form>
@@ -403,15 +519,14 @@ const handleSubmit = async (e: React.FormEvent) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        {renderForm()}
-      </DialogContent>
-    </Dialog>
-  );
+  <Dialog>
+    <DialogTrigger asChild>{trigger}</DialogTrigger>
+    <DialogContent className="sm:max-w-md max-h-[100vh] overflow-y-auto">
+      {renderForm()}
+    </DialogContent>
+  </Dialog>
+);
+
 };
 
 export default AuthModal;
