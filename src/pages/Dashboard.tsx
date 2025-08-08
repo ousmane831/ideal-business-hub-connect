@@ -16,17 +16,18 @@ const Dashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Vérifier si l'utilisateur est admin
-    const token = localStorage.getItem('adminToken');
-    const role = localStorage.getItem('userRole');
-    
-    if (!token || role !== 'admin') {
-      navigate('/admin-login');
-      return;
-    }
-    
-    setIsAdmin(true);
-  }, [navigate]);
+  const token = localStorage.getItem('access_token');
+  const role = localStorage.getItem('user_role');
+  console.log('Token:', token, 'Role:', role);
+
+  if (!token || role !== 'admin') {
+    console.log('Redirection vers /admin-login');
+    navigate('/admin-login');
+    return;
+  }
+  
+  setIsAdmin(true);
+}, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
